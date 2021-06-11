@@ -48,8 +48,8 @@ takeFinal n (x:xs) = takeFinal n xs
 --   updateAt 2 0 [4,5,6,7] ==>  [4,5,0,7]
 
 updateAt :: Int -> a -> [a] -> [a]
-updateAt _ r [] = error "ass burglar"
-updateAt 0 r (x:xs) = r:xs
+updateAt _ _ [] = error "ass burglar"
+updateAt 0 r (_:xs) = r:xs
 updateAt i r (x:xs) = x : updateAt (i - 1) r xs
 
 ------------------------------------------------------------------------------
