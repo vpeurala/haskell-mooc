@@ -3,6 +3,7 @@ module Set2b where
 import Mooc.Todo
 
 -- Some imports you'll need. Don't add other imports :)
+import Control.Monad
 import Data.List
 
 ------------------------------------------------------------------------------
@@ -81,7 +82,7 @@ myGcd a b = let replacement = max a b - min a b
 -- * you can compute the length of a string with the length function
 
 leftpad :: String -> Int -> String
-leftpad = todo
+leftpad s n = (join $ replicate (n - length s) " ") ++ s
 
 ------------------------------------------------------------------------------
 -- Ex 5: let's make a countdown for a rocket! Given a number, you
