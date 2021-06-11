@@ -93,7 +93,8 @@ isPalindrome str = str == reverse str
 --   palindromify "abracacabra" ==> "acaca"
 
 palindromify :: String -> String
-palindromify s = todo
+palindromify s | isPalindrome s = s
+palindromify s = palindromify $ tail $ init s
 
 ------------------------------------------------------------------------------
 -- Ex 7: implement safe integer division, that is, a function that
