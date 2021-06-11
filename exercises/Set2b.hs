@@ -98,7 +98,7 @@ leftpad s n = join (replicate (n - length s) " ") ++ s
 -- * you'll probably need a recursive helper function
 
 countdown :: Integer -> String
-countdown = todo
+countdown n = "Ready! " ++ concatMap (\n -> show n ++ "... ") [n, n - 1 .. 1] ++ "Liftoff!"
 
 ------------------------------------------------------------------------------
 -- Ex 6: implement the function smallestDivisor that returns the
