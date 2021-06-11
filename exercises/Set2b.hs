@@ -116,7 +116,12 @@ countdown n = "Ready! " ++ concatMap (\n -> show n ++ "... ") [n, n - 1 .. 1] ++
 -- Hint: remember the mod function!
 
 smallestDivisor :: Integer -> Integer
-smallestDivisor = todo
+smallestDivisor 0 = 0
+smallestDivisor 1 = 1
+smallestDivisor n | even n = 2
+smallestDivisor n = case find (\x -> n `mod` x == 0) [2..(floor $ sqrt $ fromIntegral n)] of
+                      Nothing -> n
+                      Just x -> x
 
 ------------------------------------------------------------------------------
 -- Ex 7: implement a function isPrime that checks if the given number
