@@ -88,7 +88,10 @@ checkPassword password = if password == "swordfish" || password == "mellon"
 -- in grams, and returns the cost in credits.
 
 postagePrice :: Int -> Int
-postagePrice = todo
+postagePrice g = case g of
+  n | n `elem` [1..500] -> 250
+    | n `elem` [501..5000] -> 300 + g
+    | n > 5000 -> 6000
 
 ------------------------------------------------------------------------------
 -- Ex 8: define a function isZero that returns True if it is given an
