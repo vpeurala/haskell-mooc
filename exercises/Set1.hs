@@ -101,7 +101,7 @@ postagePrice g = case g of
 --
 -- Ps. remember, the type of booleans in haskell is Bool
 isZero :: (Num p, Eq p) => p -> Bool
-isZero = \x -> x == 0
+isZero = (== 0)
 
 ------------------------------------------------------------------------------
 -- Ex 9: implement using recursion a function sumTo such that
@@ -118,7 +118,7 @@ sumTo n = n + sumTo (n - 1)
 
 power :: Integer -> Integer -> Integer
 power n 1 = n
-power n k = n * (power n (k - 1))
+power n k = n * power n (k - 1)
 
 ------------------------------------------------------------------------------
 -- Ex 11: ilog3 n should be the number of times you can divide given
@@ -137,4 +137,6 @@ power n k = n * (power n (k - 1))
 --   ilog3 7 ==> 2
 
 ilog3 :: Integer -> Integer
-ilog3 = todo
+ilog3 i = go 1 i
+  where go r n | n `div` 3 == 0 = r
+        go r n = go (r + 1) (n `div` 3)
