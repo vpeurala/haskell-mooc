@@ -1,4 +1,5 @@
-*~
 *.lock
+*~
+.idea/
 .stack-work
 score.json
