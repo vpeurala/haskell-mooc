@@ -1,6 +1,7 @@
 *.iml
 *.lock
 *~
+.DS_Store
 .idea/
 .stack-work
 score.json
