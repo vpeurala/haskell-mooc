@@ -82,7 +82,7 @@ myGcd a b = let replacement = max a b - min a b
 -- * you can compute the length of a string with the length function
 
 leftpad :: String -> Int -> String
-leftpad s n = (join $ replicate (n - length s) " ") ++ s
+leftpad s n = join (replicate (n - length s) " ") ++ s
 
 ------------------------------------------------------------------------------
 -- Ex 5: let's make a countdown for a rocket! Given a number, you
