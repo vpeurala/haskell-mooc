@@ -167,4 +167,4 @@ eitherDiv x y = case y of
 --   addEithers (Left "boom") (Left "fail") ==> Left "boom"
 
 addEithers :: Either String Int -> Either String Int -> Either String Int
-addEithers a b = todo
+addEithers a b = (+) <$> a <*> b
