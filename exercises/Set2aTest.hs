@@ -4,6 +4,7 @@ module Set2aTest where
 
 import Data.Char
 import Data.List
+import Debug.Trace
 import Test.QuickCheck
 
 import Mooc.Th

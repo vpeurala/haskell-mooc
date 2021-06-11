@@ -48,7 +48,9 @@ takeFinal n (x:xs) = takeFinal n xs
 --   updateAt 2 0 [4,5,6,7] ==>  [4,5,0,7]
 
 updateAt :: Int -> a -> [a] -> [a]
-updateAt i x xs = todo
+updateAt _ r [] = error "ass burglar"
+updateAt 0 r (x:xs) = r:xs
+updateAt i r (x:xs) = x : updateAt (i - 1) r xs
 
 ------------------------------------------------------------------------------
 -- Ex 4: substring i j s should return the substring of s starting at
