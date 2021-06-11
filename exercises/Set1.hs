@@ -89,7 +89,7 @@ checkPassword password = if password == "swordfish" || password == "mellon"
 
 postagePrice :: Int -> Int
 postagePrice g = case g of
-  n | n `elem` [1..500] -> 250
+  n | n <= 500 -> 250
     | n `elem` [501..5000] -> 300 + g
     | n > 5000 -> 6000
 
@@ -100,8 +100,8 @@ postagePrice g = case g of
 -- Use pattern matching! Don't use comparisons!
 --
 -- Ps. remember, the type of booleans in haskell is Bool
-
-isZero = todo
+isZero :: (Num p, Eq p) => p -> Bool
+isZero = \x -> x == 0
 
 ------------------------------------------------------------------------------
 -- Ex 9: implement using recursion a function sumTo such that
@@ -109,7 +109,8 @@ isZero = todo
 -- computes the sum 1+2+...+n
 
 sumTo :: Integer -> Integer
-sumTo = todo
+sumTo 1 = 1
+sumTo n = n + sumTo (n - 1)
 
 ------------------------------------------------------------------------------
 -- Ex 10: power n k should compute n to the power k (i.e. n^k)
