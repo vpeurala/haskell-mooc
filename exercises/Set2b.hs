@@ -65,8 +65,7 @@ myGcd :: Integer -> Integer -> Integer
 myGcd 0 b = b
 myGcd a 0 = a
 myGcd a b = let replacement = max a b - min a b
-            in  if max a b == a then myGcd replacement b
-            else myGcd a replacement
+            in  myGcd replacement (min a b)
 
 ------------------------------------------------------------------------------
 -- Ex 4: Implement the function leftpad which adds space characters
