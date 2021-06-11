@@ -232,8 +232,10 @@ sumRights = sum . map (either (const 0) id)
 --   multiCompose [reverse, tail, (++"bar")] "foo" ==> "raboo"
 --   multiCompose [(3*), (2^), (+1)] 0 ==> 6
 --   multiCompose [(+1), (2^), (3*)] 0 ==> 2
-
-multiCompose fs = todo
+multiCompose :: [t -> t] -> t -> t
+multiCompose [] x = x
+multiCompose [f] x = f x
+multiCompose (f:fs) x = f (multiCompose fs x)
 
 ------------------------------------------------------------------------------
 -- Ex 13: let's consider another way to compose multiple functions. Given
@@ -251,9 +253,11 @@ multiCompose fs = todo
 --   multiApp sum [(1+), (^3), (+2)] 1  ==>  6
 --   multiApp reverse [tail, take 2, reverse] "foo" ==> ["oof","fo","oo"]
 --   multiApp concat [take 3, reverse] "race" ==> "racecar"
-
-multiApp = todo
-
+multiApp :: ([b] -> c) -> [a -> b] -> a -> c
+multiApp f gs x = f (applyAll gs x)
+                  where applyAll [] x     = []
+                        applyAll [g] x    = [g x]
+                        applyAll (g:gs) x = (g x):(applyAll gs x)
 ------------------------------------------------------------------------------
 -- Ex 14: in this exercise you get to implement an interpreter for a
 -- simple language. You should keep track of the x and y coordinates,
