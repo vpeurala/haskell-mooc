@@ -62,7 +62,11 @@ oddFactorial n = if even n then oddFactorial (n - 1) else n * oddFactorial (n - 
 -- * https://en.wikipedia.org/wiki/Euclidean_algorithm
 
 myGcd :: Integer -> Integer -> Integer
-myGcd = todo
+myGcd 0 b = b
+myGcd a 0 = a
+myGcd a b = let replacement = max a b - min a b
+            in  if max a b == a then myGcd replacement b
+            else myGcd a replacement
 
 ------------------------------------------------------------------------------
 -- Ex 4: Implement the function leftpad which adds space characters
