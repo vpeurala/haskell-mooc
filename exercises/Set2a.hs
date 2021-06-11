@@ -148,7 +148,9 @@ safeIndex xs i = Just (xs!!i)
 --   eitherDiv 4 0   ==> Left "4/0"
 
 eitherDiv :: Integer -> Integer -> Either String Integer
-eitherDiv x y = todo
+eitherDiv x y = case y of
+  0 -> Left $ (show x) ++ "/0"
+  n -> Right (x `div` n)
 
 ------------------------------------------------------------------------------
 -- Ex 11: implement the function addEithers, which combines two values of type
