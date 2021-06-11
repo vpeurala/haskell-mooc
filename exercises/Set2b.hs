@@ -147,4 +147,4 @@ isPrime n = smallestDivisor n == n
 --   biggestPrimeAtMost 10 ==> 7
 
 biggestPrimeAtMost :: Integer -> Integer
-biggestPrimeAtMost = todo
+biggestPrimeAtMost n = maximum $ filter isPrime [n, (n - 1) .. 2]
