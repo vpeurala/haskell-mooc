@@ -18,6 +18,7 @@ module Set4a where
 
 import Mooc.Todo
 import Data.List
+import Data.Maybe
 import Data.Ord
 import qualified Data.Map as Map
 import Data.Array
@@ -203,8 +204,14 @@ freqs = foldr (\k a -> Map.alter alterFn k a) Map.empty
 --     ==> fromList [("Bob",100),("Mike",50)]
 
 transfer :: String -> String -> Int -> Map.Map String Int -> Map.Map String Int
-transfer from to amount bank = todo
-
+transfer from to amount bank =
+  let fromAccountBalance = Map.lookup from bank
+      toAccountBalance   = Map.lookup to bank
+  in  if isNothing fromAccountBalance || isNothing toAccountBalance || amount < 0 || fromJust fromAccountBalance < amount
+      then bank
+      else let b' = Map.alter (\(Just balance) -> Just (balance - amount)) from bank
+               b'' = Map.alter (\(Just balance) -> Just (balance + amount)) to b'
+           in  b''
 ------------------------------------------------------------------------------
 -- Ex 11: given an Array and two indices, swap the elements in the indices.
 --
