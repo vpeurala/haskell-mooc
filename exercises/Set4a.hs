@@ -97,7 +97,13 @@ rangeOf xs = maximum xs - minimum xs
 --   longest [[1,2,3],[4,5],[6]] ==> [1,2,3]
 --   longest ["bcd","def","ab"] ==> "bcd"
 
-longest = todo
+longest :: (Ord a) => [[a]] -> [a]
+longest = maximumBy superFunction
+          where superFunction = \(a:as) (b:bs) -> case compare (length (a:as)) (length (b:bs)) of
+                                                    EQ -> compare b a
+                                                    LT -> LT
+                                                    GT -> GT
+
 
 ------------------------------------------------------------------------------
 -- Ex 6: Implement the function incrementKey, that takes a list of
