@@ -39,7 +39,7 @@ import Mooc.Todo
 --   buildList 7 0 3 ==> [3]
 
 buildList :: Int -> Int -> Int -> [Int]
-buildList start 0 end = [end]
+buildList _ 0 end = [end]
 buildList start count end = start : buildList start (count - 1) end
 
 ------------------------------------------------------------------------------
@@ -50,7 +50,10 @@ buildList start count end = start : buildList start (count - 1) end
 -- Ps. you'll probably need a recursive helper function
 
 sums :: Int -> [Int]
-sums i = todo
+sums i = go 1 i 0
+         where
+           go n k c | n == k = [k + c]
+           go n k c = n + c : go (n + 1) k (n + c)
 
 ------------------------------------------------------------------------------
 -- Ex 3: define a function mylast that returns the last value of the
