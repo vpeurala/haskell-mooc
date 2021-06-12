@@ -294,7 +294,7 @@ multiApp f gs x = f (applyAll gs x)
 -- function, the surprise won't work.
 
 interpreter :: [String] -> [String]
-interpreter commands = multiApp finalize (map run commands) initialWriterState
+interpreter commands = snd $ multiCompose (map run (reverse commands)) initialWriterState
                          where initialWriterState :: ((Int, Int), [String])
                                initialWriterState = ((0, 0), [])
                                run cmd ((x, y), w) = case cmd of
@@ -304,5 +304,3 @@ interpreter commands = multiApp finalize (map run commands) initialWriterState
                                  "left" -> ((x - 1, y), w)
                                  "printX" -> ((x, y), w ++ [show x])
                                  "printY" -> ((x, y), w ++ [show y])
-                               finalize :: [((Int, Int), [String])] -> [String]
-                               finalize = concatMap snd
