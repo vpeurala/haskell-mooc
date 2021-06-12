@@ -13,12 +13,6 @@ import Data.Char
 import Data.Either
 import Data.List
 
--- Yes, I will.
-import Control.Monad.Trans.Writer (Writer, execWriter, writer)
-import Data.Monoid
-import Debug.Trace
-import Set2a
-
 ------------------------------------------------------------------------------
 -- Ex 1: implement the function maxBy that takes as argument a
 -- measuring function (of type a -> Int) and two values (of type a).
@@ -87,7 +81,7 @@ firstHalf s = take n s
                 n = if even len then len `div` 2 else len `div` 2 + 1
                 len = length s
 
-palindrome = Set2a.isPalindrome
+palindrome s = s == reverse s
 
 ------------------------------------------------------------------------------
 -- Ex 5: Implement a function capitalize that takes in a string and
