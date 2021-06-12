@@ -119,5 +119,6 @@ headHelper elem _ = Just elem
 myLast :: [a] -> Maybe a
 myLast xs = foldr lastHelper Nothing xs
 
-lastHelper = todo
+lastHelper elem Nothing = Just elem
+lastHelper elem (Just x) = Just x
 
