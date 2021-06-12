@@ -116,7 +116,7 @@ sumsOf :: [Int] -> [Int]
 sumsOf [] = []
 sumsOf [n] = [n]
 sumsOf (n:ns) = n : go n ns
-                where go x [] = []
+                where go _ [] = []
                       go x [y] = [x + y]
                       go x (y:ys) = x + y : go (x + y) ys
 
@@ -131,7 +131,10 @@ sumsOf (n:ns) = n : go n ns
 --   merge [1,1,6] [1,2]   ==> [1,1,1,2,6]
 
 merge :: [Int] -> [Int] -> [Int]
-merge xs ys = todo
+merge [] [] = []
+merge xs [] = xs
+merge [] ys = ys
+merge (x:xs) (y:ys) = if (x < y) then x : merge xs (y:ys) else y : merge (x:xs) ys
 
 ------------------------------------------------------------------------------
 -- Ex 8: define the function mymaximum that takes a list and a
@@ -150,7 +153,9 @@ merge xs ys = todo
 --     ==> [1,2]
 
 mymaximum :: (a -> a -> Bool) -> a -> [a] -> a
-mymaximum bigger initial xs = todo
+mymaximum _ initial [] = initial
+mymaximum bigger initial [x] = if bigger initial x then initial else x
+mymaximum bigger initial (x:xs) = if bigger initial x then mymaximum bigger initial xs else mymaximum bigger x xs
 
 ------------------------------------------------------------------------------
 -- Ex 9: define a version of map that takes a two-argument function
