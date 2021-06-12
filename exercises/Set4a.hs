@@ -203,6 +203,7 @@ freqs = foldr (\k a -> Map.alter alterFn k a) Map.empty
 --   transfer "Lisa" "Mike" 20 bank
 --     ==> fromList [("Bob",100),("Mike",50)]
 
+-- TODO Inelegant solution
 transfer :: String -> String -> Int -> Map.Map String Int -> Map.Map String Int
 transfer from to amount bank =
   let fromAccountBalance = Map.lookup from bank
