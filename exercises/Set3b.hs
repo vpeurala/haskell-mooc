@@ -99,7 +99,9 @@ indexDefault (_:xs) i def = indexDefault xs (i - 1) def
 -- Use pattern matching and recursion to iterate through the list.
 
 sorted :: [Int] -> Bool
-sorted xs = todo
+sorted [] = True
+sorted [x] = True
+sorted (x:y:xs) = x <= y && sorted (y:xs)
 
 ------------------------------------------------------------------------------
 -- Ex 6: compute the partial sums of the given list like this:
@@ -111,7 +113,12 @@ sorted xs = todo
 -- Use pattern matching and recursion (and the list constructors : and [])
 
 sumsOf :: [Int] -> [Int]
-sumsOf xs = todo
+sumsOf [] = []
+sumsOf [n] = [n]
+sumsOf (n:ns) = n : go n ns
+                where go x [] = []
+                      go x [y] = [x + y]
+                      go x (y:ys) = x + y : go (x + y) ys
 
 ------------------------------------------------------------------------------
 -- Ex 7: implement the function merge that merges two sorted lists of
