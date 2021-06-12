@@ -14,7 +14,9 @@ import Data.Either
 import Data.List
 
 -- Yes, I will.
+import Control.Monad.Trans.Writer (Writer, execWriter, writer)
 import Data.Monoid
+import Debug.Trace
 import Set2a
 
 ------------------------------------------------------------------------------
@@ -257,7 +259,8 @@ multiApp :: ([b] -> c) -> [a -> b] -> a -> c
 multiApp f gs x = f (applyAll gs x)
                   where applyAll [] x     = []
                         applyAll [g] x    = [g x]
-                        applyAll (g:gs) x = (g x):(applyAll gs x)
+                        applyAll (g:gs) x = g x : applyAll gs x
+
 ------------------------------------------------------------------------------
 -- Ex 14: in this exercise you get to implement an interpreter for a
 -- simple language. You should keep track of the x and y coordinates,
@@ -291,4 +294,15 @@ multiApp f gs x = f (applyAll gs x)
 -- function, the surprise won't work.
 
 interpreter :: [String] -> [String]
-interpreter commands = todo
+interpreter commands = multiApp finalize (map run commands) initialWriterState
+                         where initialWriterState :: ((Int, Int), [String])
+                               initialWriterState = ((0, 0), [])
+                               run cmd ((x, y), w) = case cmd of
+                                 "up" -> ((x, y + 1), w)
+                                 "down" -> ((x, y - 1), w)
+                                 "right" -> ((x + 1, y), w)
+                                 "left" -> ((x - 1, y), w)
+                                 "printX" -> ((x, y), w ++ [show x])
+                                 "printY" -> ((x, y), w ++ [show y])
+                               finalize :: [((Int, Int), [String])] -> [String]
+                               finalize = concatMap snd
