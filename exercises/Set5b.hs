@@ -65,7 +65,8 @@ allValues condition (Node v a b) = condition v && allValues condition a && allVa
 --   ==> (Node 2 (Node 3 Empty Empty) (Node 4 Empty Empty))
 
 mapTree :: (a -> b) -> Tree a -> Tree b
-mapTree f t = todo
+mapTree _ Empty = Empty
+mapTree f (Node v a b) = Node (f v) (mapTree f a) (mapTree f b)
 
 ------------------------------------------------------------------------------
 -- Ex 6: given a value and a tree, build a new tree that is the same,
