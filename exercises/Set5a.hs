@@ -336,22 +336,20 @@ inc (O b) = I b
 inc (I b) = O (inc b)
 
 prettyPrint :: Bin -> String
-prettyPrint End = ""
+prettyPrint (O End) = "0"
+prettyPrint (I End) = "1"
 prettyPrint (O b) = prettyPrint b ++ "0"
 prettyPrint (I b) = prettyPrint b ++ "1"
 
 fromBin :: Bin -> Int
-fromBin b = read (prettyPrint b)
+fromBin End = 0
+fromBin (O b) = 0 + 2 * (fromBin b)
+fromBin (I b) = 1 + 2 * (fromBin b)
 
 squaresOf2 :: [Int]
 squaresOf2 = map (2 ^) [1..]
 
 toBin :: Int -> Bin
-toBin n = let powers = reverse $ takeWhile (<= n) squaresOf2
-          in  g n powers
-          where g :: Int -> [Int] -> Bin
-                g 0 [] = O End
-                g 1 [] = I End
-                g x (p:ps) = if (x `div` p) == 1
-                             then I (g (x `mod` p) ps)
-                             else O (g (x `mod` p) ps)
+toBin 0 = O End
+toBin 1 = I End
+toBin n = inc $ toBin (n - 1)
