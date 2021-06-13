@@ -5,6 +5,8 @@
 
 module Set5a where
 
+import Data.Maybe
+
 import Mooc.Todo
 
 ------------------------------------------------------------------------------
@@ -268,10 +270,13 @@ data Nat = Zero | PlusOne Nat
   deriving (Show,Eq)
 
 fromNat :: Nat -> Int
-fromNat n = todo
+fromNat Zero = 0
+fromNat (PlusOne n) = 1 + fromNat n
 
 toNat :: Int -> Maybe Nat
-toNat z = todo
+toNat n | n < 0 = Nothing
+toNat 0 = Just Zero
+toNat n = Just (PlusOne $ fromJust $ toNat $ n - 1)
 
 ------------------------------------------------------------------------------
 -- Ex 12: While pleasingly simple in its definition, the Nat datatype is not
