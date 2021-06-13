@@ -207,7 +207,11 @@ data Color = Red | Green | Blue | Mix Color Color | Invert Color
   deriving Show
 
 rgb :: Color -> [Double]
-rgb col = todo
+rgb Red = [1.0, 0, 0]
+rgb Green = [0, 1.0, 0]
+rgb Blue = [0, 0, 1.0]
+rgb (Mix c1 c2) = map (\(c1, c2) -> (c1 + c2) / 2) $ zip (rgb c1) (rgb c2)
+rgb (Invert c1) = map (1.0 -) (rgb c1)
 
 ------------------------------------------------------------------------------
 -- Ex 9: define a parameterized datatype OneOrTwo that contains one or
@@ -217,6 +221,7 @@ rgb col = todo
 --   One True         ::  OneOrTwo Bool
 --   Two "cat" "dog"  ::  OneOrTwo String
 
+data OneOrTwo a = One a | Two a a
 
 ------------------------------------------------------------------------------
 -- Ex 10: define a recursive datatype KeyVals for storing a set of
@@ -237,14 +242,16 @@ rgb col = todo
 -- Also define the functions toList and fromList that convert between
 -- KeyVals and lists of pairs.
 
-data KeyVals k v = KeyValsUndefined
+data KeyVals k v = Empty | Pair k v (KeyVals k v)
   deriving Show
 
 toList :: KeyVals k v -> [(k,v)]
-toList = todo
+toList Empty = []
+toList (Pair k v rest) = (k, v) : toList rest
 
 fromList :: [(k,v)] -> KeyVals k v
-fromList = todo
+fromList [] = Empty
+fromList ((k, v):rest) = Pair k v (fromList rest)
 
 ------------------------------------------------------------------------------
 -- Ex 11: The data type Nat is the so called Peano
