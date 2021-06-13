@@ -28,7 +28,7 @@ valAtRoot (Node val _ _) = Just val
 
 treeSize :: Tree a -> Int
 treeSize Empty = 0
-treeSize (Node val left right) = 1 + treeSize left + treeSize right
+treeSize (Node _ left right) = 1 + treeSize left + treeSize right
 
 ------------------------------------------------------------------------------
 -- Ex 3: get the largest value in a tree of positive Ints. The
@@ -39,7 +39,8 @@ treeSize (Node val left right) = 1 + treeSize left + treeSize right
 --   treeMax (Node 3 (Node 5 Empty Empty) (Node 4 Empty Empty))  ==>  5
 
 treeMax :: Tree Int -> Int
-treeMax = todo
+treeMax Empty = 0
+treeMax (Node v a b) = maximum [v, treeMax a, treeMax b]
 
 ------------------------------------------------------------------------------
 -- Ex 4: implement a function that checks if all tree values satisfy a
@@ -51,7 +52,8 @@ treeMax = todo
 --   allValues (>0) (Node 1 Empty (Node 0 Empty Empty))  ==>  False
 
 allValues :: (a -> Bool) -> Tree a -> Bool
-allValues condition tree = todo
+allValues _ Empty = True
+allValues condition (Node v a b) = condition v && allValues condition a && allValues condition b
 
 ------------------------------------------------------------------------------
 -- Ex 5: implement map for trees.
