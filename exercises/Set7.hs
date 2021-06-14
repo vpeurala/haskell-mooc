@@ -122,7 +122,8 @@ average (n :| ns) = (n + avgList ns * fromIntegral (length ns)) / fromIntegral (
 -- Ex 5: reverse a NonEmpty list.
 
 reverseNonEmpty :: NonEmpty a -> NonEmpty a
-reverseNonEmpty = todo
+reverseNonEmpty (n :| []) = n :| []
+reverseNonEmpty (n :| ns) = head (reverse ns) :| tail (reverse ns) ++ [n]
 
 ------------------------------------------------------------------------------
 -- Ex 6: implement Semigroup instances for the Distance, Time and
