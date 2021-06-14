@@ -251,10 +251,10 @@ rectangle x0 y0 w h = Shape f
 -- shape.
 
 union :: Shape -> Shape -> Shape
-union = todo
+union (Shape s1) (Shape s2) = Shape (\coord -> s1 coord || s2 coord)
 
 cut :: Shape -> Shape -> Shape
-cut = todo
+cut (Shape s1) (Shape s2) = Shape (\coord -> (s1 coord) && (not (s2 coord)))
 ------------------------------------------------------------------------------
 
 -- Here's a snowman, built using union from circles and rectangles.
