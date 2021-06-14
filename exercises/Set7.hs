@@ -113,7 +113,10 @@ bake events = go Start events
 --   average (1.0 :| [2.0,3.0])  ==>  2.0
 
 average :: Fractional a => NonEmpty a -> a
-average = todo
+average (n :| []) = n
+average (n :| ns) = (n + avgList ns * fromIntegral (length ns)) / fromIntegral (length (n:ns))
+                    where avgList :: (Fractional a, Num a) => [a] -> a
+                          avgList xs = sum xs / fromIntegral (length xs)
 
 ------------------------------------------------------------------------------
 -- Ex 5: reverse a NonEmpty list.
