@@ -254,9 +254,9 @@ union :: Shape -> Shape -> Shape
 union (Shape s1) (Shape s2) = Shape (\coord -> s1 coord || s2 coord)
 
 cut :: Shape -> Shape -> Shape
-cut (Shape s1) (Shape s2) = Shape (\coord -> (s1 coord) && (not (s2 coord)))
-------------------------------------------------------------------------------
+cut (Shape s1) (Shape s2) = Shape (\coord -> s1 coord && (not (s2 coord)))
 
+------------------------------------------------------------------------------
 -- Here's a snowman, built using union from circles and rectangles.
 -- See it by running
 --   render exampleSnowman 400 300 "snowman.png"
@@ -282,7 +282,8 @@ exampleSnowman = fill white snowman
 --        ["000000","000000","000000"]]
 
 paintSolid :: Color -> Shape -> Picture -> Picture
-paintSolid color shape base = todo
+paintSolid color (Shape s) (Picture base) = Picture f
+  where f c = if s c then color else base c
 ------------------------------------------------------------------------------
 
 allWhite :: Picture
