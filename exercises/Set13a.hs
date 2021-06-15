@@ -6,6 +6,7 @@ import Control.Monad
 import Control.Monad.Trans.State
 import Data.Char
 import Data.List
+import Data.Maybe
 import qualified Data.Map as Map
 
 import Examples.Bank
@@ -114,8 +115,14 @@ winner scores player1 player2 =
 --  selectSum [0..10] [4,6,9,20]
 --    Nothing
 
+safeIndex :: [a] -> Int -> Maybe a
+safeIndex xs ix | ix < 0 || ix >= length xs = Nothing
+safeIndex xs ix = Just (xs !! ix)
+
 selectSum :: Num a => [a] -> [Int] -> Maybe a
-selectSum xs is = todo
+selectSum xs ix = case traverse (safeIndex xs) ix of
+                    Just ns -> Just (sum ns)
+                    Nothing -> Nothing
 
 ------------------------------------------------------------------------------
 -- Ex 4: Here is the Logger monad from the course material. Implement
