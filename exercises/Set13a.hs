@@ -93,10 +93,11 @@ checkCapitals (for,sur) =
 
 winner :: [(String,Int)] -> String -> String -> Maybe String
 winner scores player1 player2 =
-  case (>=) <$> (lookup player1 scores) <*> (lookup player2 scores) of
+  case (>=) <$> lookupInScores player1 <*> lookupInScores player2 of
     Just True -> Just player1
     Just False -> Just player2
     Nothing -> Nothing
+  where lookupInScores = (flip lookup) scores
 
 ------------------------------------------------------------------------------
 -- Ex 3: given a list of indices and a list of values, return the sum
