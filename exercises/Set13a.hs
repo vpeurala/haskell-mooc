@@ -93,13 +93,10 @@ checkCapitals (for,sur) =
 
 winner :: [(String,Int)] -> String -> String -> Maybe String
 winner scores player1 player2 =
-  let p1Score = lookup player1 scores
-      p2Score = lookup player2 scores
-  in case (p1Score, p2Score) of
-       (Nothing, Nothing) -> Nothing
-       (Just x, Nothing)  -> Nothing
-       (Nothing, Just y)  -> Nothing
-       (Just x, Just y)   -> Just (if x >= y then player1 else player2)
+  case (>=) <$> (lookup player1 scores) <*> (lookup player2 scores) of
+    Just True -> Just player1
+    Just False -> Just player2
+    Nothing -> Nothing
 
 ------------------------------------------------------------------------------
 -- Ex 3: given a list of indices and a list of values, return the sum
