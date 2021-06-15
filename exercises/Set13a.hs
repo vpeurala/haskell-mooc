@@ -154,7 +154,12 @@ instance Applicative Logger where
   (<*>) = ap
 
 countAndLog :: Show a => (a -> Bool) -> [a] -> Logger Int
-countAndLog = todo
+countAndLog p xs =
+  let accepted = filter p xs
+  in  Logger (map show accepted) (length accepted)
+
+
+
 
 ------------------------------------------------------------------------------
 -- Ex 5: You can find the Bank and BankOp code from the course
