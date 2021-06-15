@@ -153,13 +153,13 @@ instance Applicative Logger where
   pure = return
   (<*>) = ap
 
--- TODO This is not the solution we were looking for - it should use function msg.
 countAndLog :: Show a => (a -> Bool) -> [a] -> Logger Int
-countAndLog p xs =
-  let accepted = filter p xs
-  in  Logger (map show accepted) (length accepted)
-
-
+countAndLog _ [] = return 0
+countAndLog p (x:xs) | p x = do
+  msg (show x)
+  nxs <- countAndLog p xs
+  return (1 + nxs)
+countAndLog p (_:xs) = countAndLog p xs
 
 
 ------------------------------------------------------------------------------
