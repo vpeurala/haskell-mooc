@@ -120,9 +120,7 @@ safeIndex xs ix | ix < 0 || ix >= length xs = Nothing
 safeIndex xs ix = Just (xs !! ix)
 
 selectSum :: Num a => [a] -> [Int] -> Maybe a
-selectSum xs ix = case traverse (safeIndex xs) ix of
-                    Just ns -> Just (sum ns)
-                    Nothing -> Nothing
+selectSum xs is = traverse (safeIndex xs) is >>= return . sum
 
 ------------------------------------------------------------------------------
 -- Ex 4: Here is the Logger monad from the course material. Implement
