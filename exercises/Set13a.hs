@@ -97,7 +97,7 @@ winner scores player1 player2 =
     Just True -> Just player1
     Just False -> Just player2
     Nothing -> Nothing
-  where lookupInScores = (flip lookup) scores
+  where lookupInScores = flip lookup scores
 
 ------------------------------------------------------------------------------
 -- Ex 3: given a list of indices and a list of values, return the sum
