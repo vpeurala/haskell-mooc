@@ -72,7 +72,7 @@ longestRepeat t = go 1 (T.head t) 1 (T.tail t)
 --   takeStrict 15 (TL.pack (cycle "asdf"))  ==>  "asdfasdfasdfasd"
 
 takeStrict :: Int64 -> TL.Text -> T.Text
-takeStrict = todo
+takeStrict n t = TL.toStrict $ TL.take n t
 
 ------------------------------------------------------------------------------
 -- Ex 5: Find the difference between the largest and smallest byte
