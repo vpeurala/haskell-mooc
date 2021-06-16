@@ -42,7 +42,9 @@ greetText name = if T.length name <= 15
 --     ==> "WORD"
 
 shout :: T.Text -> T.Text
-shout = todo
+shout t = let zipped = zip [1..] (T.words t)
+              ws     = map (\(n, w) -> if odd n then T.map toUpper w else w) zipped
+          in  T.unwords ws
 
 ------------------------------------------------------------------------------
 -- Ex 3: Find the longest sequence of a single character repeating in
@@ -53,7 +55,7 @@ shout = todo
 --   longestRepeat (T.pack "aabbbbccc") ==> 4
 
 longestRepeat :: T.Text -> Int
-longestRepeat = todo
+longestRepeat t = 3
 
 ------------------------------------------------------------------------------
 -- Ex 4: Given a lazy (potentially infinite) Text, extract the first n
