@@ -55,7 +55,11 @@ shout t = let zipped = zip [1..] (T.words t)
 --   longestRepeat (T.pack "aabbbbccc") ==> 4
 
 longestRepeat :: T.Text -> Int
-longestRepeat t = 3
+longestRepeat t | T.empty == t = 0
+longestRepeat t = go 1 (T.head t) 1 (T.tail t)
+  where go longest ch cnt txt | txt == T.empty = max longest cnt
+        go longest ch cnt rest | T.head rest == ch = go (max longest (cnt + 1)) ch (cnt + 1) (T.tail rest)
+        go longest ch cnt rest = go (max longest 1) (T.head rest) 1 (T.tail rest)
 
 ------------------------------------------------------------------------------
 -- Ex 4: Given a lazy (potentially infinite) Text, extract the first n
