@@ -73,12 +73,17 @@ getAllQuery = Query (T.pack "SELECT account, amount FROM events;")
 -- openDatabase should open an SQLite database using the given
 -- filename, run initQuery on it, and produce a database Connection.
 openDatabase :: String -> IO Connection
-openDatabase = todo
+openDatabase fileName = do
+  connection <- open fileName
+  execute_ connection initQuery
+  return connection
 
 -- given a db connection, an account name, and an amount, deposit
 -- should add an (account, amount) row into the database
 deposit :: Connection -> T.Text -> Int -> IO ()
-deposit = todo
+deposit connection accountName amount = do
+  execute connection depositQuery (accountName, amount)
+  return ()
 
 ------------------------------------------------------------------------------
 -- Ex 2: Fetching an account's balance. Below you'll find
