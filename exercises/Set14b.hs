@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Set14b where
 
 -- In this exercise set, we're going to implement an HTTP API for a
@@ -111,10 +112,13 @@ deposit connection accountName amount = do
 --   0
 
 balanceQuery :: Query
-balanceQuery = Query (T.pack "SELECT amount FROM events WHERE account = ?;")
+balanceQuery = Query "SELECT amount FROM events WHERE account = ?;"
+--balanceQuery = Query "SELECT SUM(amount) AS `sum` FROM events WHERE account = ?;"
 
 balance :: Connection -> T.Text -> IO Int
-balance = todo
+balance connection name = do
+  result <- (query connection balanceQuery name) :: [Int]
+  return result
 
 ------------------------------------------------------------------------------
 -- Ex 3: Now that we have the database part covered, let's think about
