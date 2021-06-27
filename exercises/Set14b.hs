@@ -157,8 +157,8 @@ parseInt :: T.Text -> Maybe Int
 parseInt = readMaybe . T.unpack
 
 parseCommand :: [T.Text] -> Maybe Command
-parseCommand ("balance" : name : []) = Just (Balance name)
-parseCommand ("deposit" : name : amount : []) = Just (Deposit name $ fromMaybe 0 $ parseInt amount)
+parseCommand ["balance", name] = Just (Balance name)
+parseCommand ["deposit", name, amount] = parseInt amount >>= (Just . Deposit name)
 parseCommand _ = Nothing
 
 ------------------------------------------------------------------------------
