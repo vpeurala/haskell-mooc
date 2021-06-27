@@ -185,7 +185,14 @@ parseCommand _ = Nothing
 --   "0"
 
 perform :: Connection -> Maybe Command -> IO T.Text
-perform = todo
+perform db (Just (Deposit name amount)) = do
+  deposit db name amount
+  return "OK"
+perform db (Just (Balance name)) = do
+  balInt <- balance db name
+  return $ T.pack (show balInt)
+perform db Nothing = return "Error"
+
 
 ------------------------------------------------------------------------------
 -- Ex 5: Next up, let's set up a simple HTTP server. Implement a WAI
