@@ -54,7 +54,9 @@ statements xs ys = concat $ liftA2 (\x y -> [x <> " is " <> y, x <> " is not " <
 --  calculator "double" "7x"  ==> Nothing
 
 calculator :: String -> String -> Maybe Int
-calculator = todo
+calculator "negate" n = fmap negate (readMaybe n :: Maybe Int)
+calculator "double" n = fmap (* 2) (readMaybe n :: Maybe Int)
+calculator _ _ = Nothing
 
 ------------------------------------------------------------------------------
 -- Ex 4: Safe division. Implement the function validateDiv that
