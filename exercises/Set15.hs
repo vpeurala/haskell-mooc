@@ -5,7 +5,9 @@ import Examples.Validation
 
 import Control.Applicative
 import Data.Char
-import Text.Read (readMaybe)
+import Data.Either
+import Data.Maybe
+import Text.Read (readEither, readMaybe)
 
 ------------------------------------------------------------------------------
 -- Ex 1: Sum two Maybe Int values using Applicative operations (i.e.
@@ -149,8 +151,15 @@ twoPersons name1 age1 employed1 name2 age2 employed2 =
 --  boolOrInt "13.2"    ==> Errors ["Not a Bool","Not an Int"]
 --  boolOrInt "Falseb"  ==> Errors ["Not a Bool","Not an Int"]
 
+-- TODO Inelegant as hell, but works.
 boolOrInt :: String -> Validation (Either Bool Int)
-boolOrInt = todo
+boolOrInt s = checkBool <|> checkInt
+  where parseBool = readEither s :: Either String Bool
+        parseInt  = readEither s :: Either String Int
+        checkBool :: Validation (Either Bool Int)
+        checkBool = check (isRight parseBool) "Not a Bool" (either undefined Left parseBool)
+        checkInt :: Validation (Either Bool Int)
+        checkInt  = check (isRight parseInt) "Not an Int" (either undefined Right parseInt)
 
 ------------------------------------------------------------------------------
 -- Ex 8: Improved phone number validation. Implement the function
