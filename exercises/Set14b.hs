@@ -112,7 +112,6 @@ deposit connection accountName amount = do
 --   0
 
 balanceQuery :: Query
---balanceQuery = Query "SELECT amount FROM events WHERE account = ?;"
 balanceQuery = Query "SELECT SUM(amount) AS `sum` FROM events WHERE account = ?;"
 
 balance :: Connection -> T.Text -> IO Int
@@ -158,7 +157,9 @@ parseInt :: T.Text -> Maybe Int
 parseInt = readMaybe . T.unpack
 
 parseCommand :: [T.Text] -> Maybe Command
-parseCommand = todo
+parseCommand ("balance" : name : []) = Just (Balance name)
+parseCommand ("deposit" : name : amount : []) = Just (Deposit name $ fromMaybe 0 $ parseInt amount)
+parseCommand _ = Nothing
 
 ------------------------------------------------------------------------------
 -- Ex 4: Running commands. Implement the IO operation perform that takes a
