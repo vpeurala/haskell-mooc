@@ -73,7 +73,7 @@ calculator _ _ = Nothing
 --  validateDiv 0 3 ==> Ok 0
 
 validateDiv :: Int -> Int -> Validation Int
-validateDiv = todo
+validateDiv numerator denominator = check (denominator /= 0) "Division by zero!" (numerator `div` denominator)
 
 ------------------------------------------------------------------------------
 -- Ex 5: Validating street addresses. A street address consists of a
