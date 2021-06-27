@@ -27,7 +27,7 @@ import Network.Wai.Handler.Warp (run)
 import Network.HTTP.Types (status200)
 
 -- Database
-import Database.SQLite.Simple (open,execute,execute_,query,query_,Connection,Query(..))
+import Database.SQLite.Simple (open,execute,execute_,fromOnly,query,query_,Connection,Only(..),Query(..))
 
 ------------------------------------------------------------------------------
 -- Ex 1: Let's start with implementing some database operations. The
@@ -112,13 +112,14 @@ deposit connection accountName amount = do
 --   0
 
 balanceQuery :: Query
-balanceQuery = Query "SELECT amount FROM events WHERE account = ?;"
---balanceQuery = Query "SELECT SUM(amount) AS `sum` FROM events WHERE account = ?;"
+--balanceQuery = Query "SELECT amount FROM events WHERE account = ?;"
+balanceQuery = Query "SELECT SUM(amount) AS `sum` FROM events WHERE account = ?;"
 
 balance :: Connection -> T.Text -> IO Int
 balance connection name = do
-  result <- (query connection balanceQuery name) :: [Int]
-  return result
+  rows <- query connection balanceQuery (Only name) :: IO [Only (Maybe Int)]
+  let result = fromOnly (head rows)
+  return $ fromMaybe 0 result
 
 ------------------------------------------------------------------------------
 -- Ex 3: Now that we have the database part covered, let's think about
