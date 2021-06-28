@@ -235,7 +235,21 @@ data Expression = Plus Arg Arg | Minus Arg Arg
   deriving (Show, Eq)
 
 parseExpression :: String -> Validation Expression
-parseExpression = todo
+parseExpression s = parseExpr (words s)
+  where parseExpr :: [String] -> Validation Expression
+        parseExpr [x, op, y] =
+          check (op == "+" || op == "-") ("Unknown operator: " ++ op) ""
+          *> (parseOp op x y)
+        parseExpr _ = invalid $ "Invalid expression: " ++ s
+        parseOp :: String -> String -> String -> Validation Expression
+        parseOp op x y =
+            (if op == "+"
+             then Plus <$> (parseArg x) <*> (parseArg y)
+             else Minus <$> (parseArg x) <*> (parseArg y))
+        parseArg :: String -> Validation Arg
+        parseArg v =
+          check (all isDigit v) ("Invalid number: " ++ v) (Number (read v :: Int))
+          <|> check (length v == 1 && isAlpha (head v)) ("Invalid variable: " ++ v) (Variable (head v))
 
 ------------------------------------------------------------------------------
 -- Ex 10: The Priced T type tracks a value of type T, and a price
