@@ -45,7 +45,8 @@ workload nExercises hoursPerExercise =
 -- Hint: use recursion
 
 echo :: String -> String
-echo = todo
+echo [] = []
+echo s@(x:xs) = s ++ ", " ++ echo xs
 
 ------------------------------------------------------------------------------
 -- Ex 3: A country issues some banknotes. The banknotes have a serial
