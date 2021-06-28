@@ -206,7 +206,9 @@ instance Eq Text where
 --       ==> [("a",1),("b",2)]
 
 compose :: (Eq a, Eq b) => [(a,b)] -> [(b,c)] -> [(a,c)]
-compose = todo
+compose abs bcs = abs >>= (\(a, b) -> case lookup b bcs of
+                                        Just c -> [(a, c)]
+                                        Nothing -> [])
 
 ------------------------------------------------------------------------------
 -- Ex 9: Reorder a list using an [(Int,Int)] mapping.
