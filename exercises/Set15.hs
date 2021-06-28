@@ -355,7 +355,8 @@ myFmap func appl = (myPure func) <#> appl
 --       ==> Errors ["zero","zero","zero"]
 
 tryAll :: Alternative f => (a -> f b) -> [a] -> f b
-tryAll = todo
+tryAll f [] = empty
+tryAll f (x:xs) = f x <|> (tryAll f xs)
 
 ------------------------------------------------------------------------------
 -- Ex 14: Here's the type `Both` that expresses the composition of
