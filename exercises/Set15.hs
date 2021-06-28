@@ -128,7 +128,6 @@ validateAddress streetName streetNumber postCode =
 data Person = Person String Int Bool
   deriving (Show, Eq)
 
--- TODO Inelegant
 twoPersons :: Applicative f =>
   f String -> f Int -> f Bool -> f String -> f Int -> f Bool
   -> f [Person]
