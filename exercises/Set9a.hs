@@ -11,6 +11,7 @@
 module Set9a where
 
 import Data.Char
+import Data.Either (rights)
 import Data.List
 import Data.Ord
 
@@ -96,7 +97,10 @@ repeated (x:xs) = repeated xs
 --     ==> Left "no data"
 
 sumSuccess :: [Either String Int] -> Either String Int
-sumSuccess = todo
+sumSuccess xs = let rs = rights xs
+                in  if length rs == 0
+                    then Left "no data"
+                    else Right $ sum rs
 
 ------------------------------------------------------------------------------
 -- Ex 6: A combination lock can either be open or closed. The lock
@@ -118,30 +122,34 @@ sumSuccess = todo
 --   isOpen (open "0000" (lock (changeCode "0000" (open "1234" aLock)))) ==> True
 --   isOpen (open "1234" (lock (changeCode "0000" (open "1234" aLock)))) ==> False
 
-data Lock = LockUndefined
+data Lock = Open String | Closed String
   deriving Show
 
 -- aLock should be a locked lock with the code "1234"
 aLock :: Lock
-aLock = todo
+aLock = Closed "1234"
 
 -- isOpen returns True if the lock is open
 isOpen :: Lock -> Bool
-isOpen = todo
+isOpen (Open _) = True
+isOpen (Closed _) = False
 
 -- open tries to open the lock with the given code. If the code is
 -- wrong, nothing happens.
 open :: String -> Lock -> Lock
-open = todo
+open code (Closed c) | code == c = Open c
+open code l = l
 
 -- lock closes a lock. If the lock is already closed, nothing happens.
 lock :: Lock -> Lock
-lock = todo
+lock (Open c) = Closed c
+lock l = l
 
 -- changeCode changes the code of an open lock. If the lock is closed,
 -- nothing happens.
 changeCode :: String -> Lock -> Lock
-changeCode = todo
+changeCode code (Open _) = Open code
+changeCode _ l@(Closed _) = l
 
 ------------------------------------------------------------------------------
 -- Ex 7: Here's a type Text that just wraps a String. Implement an Eq
@@ -158,6 +166,12 @@ changeCode = todo
 
 data Text = Text String
   deriving Show
+
+instance Eq Text where
+  (Text a) == (Text b) = removeWhitespace a == removeWhitespace b
+                         where removeWhitespace [] = []
+                               removeWhitespace (c:cs) | isSpace c = removeWhitespace cs
+                               removeWhitespace (c:cs) | otherwise = c : removeWhitespace cs
 
 
 ------------------------------------------------------------------------------
