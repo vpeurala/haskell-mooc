@@ -328,7 +328,7 @@ instance MyApplicative [] where
 --  myFmap negate [1,2,3]  ==> [-1,-2,-3]
 
 myFmap :: MyApplicative f => (a -> b) -> f a -> f b
-myFmap = todo
+myFmap func appl = (myPure func) <#> appl
 
 ------------------------------------------------------------------------------
 -- Ex 13: Given a function that returns an Alternative value, and a
