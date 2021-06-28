@@ -13,6 +13,7 @@ module Set9a where
 import Data.Char
 import Data.Either (rights)
 import Data.List
+import Data.Maybe (fromJust)
 import Data.Ord
 
 import Mooc.Todo
@@ -246,4 +247,9 @@ compose abs bcs = abs >>= (\(a, b) -> case lookup b bcs of
 type Permutation = [(Int,Int)]
 
 permute :: Permutation -> [a] -> [a]
-permute = todo
+permute perm xs =
+  let zipped = zip [0..] xs
+      newIndices = map permutor zipped
+  in  map snd $ sortOn fst newIndices
+  where permutor :: (Int, a) -> (Int, a)
+        permutor (ix, x) = (fromJust $ lookup ix perm, x)
