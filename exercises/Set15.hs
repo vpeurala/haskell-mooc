@@ -128,6 +128,7 @@ validateAddress streetName streetNumber postCode =
 data Person = Person String Int Bool
   deriving (Show, Eq)
 
+-- TODO Inelegant
 twoPersons :: Applicative f =>
   f String -> f Int -> f Bool -> f String -> f Int -> f Bool
   -> f [Person]
@@ -182,8 +183,15 @@ boolOrInt s = checkBool <|> checkInt
 --  normalizePhone "123 456 78 999"
 --    ==> Errors ["Too long"]
 
+removeWhitespace :: String -> String
+removeWhitespace [] = []
+removeWhitespace (x:xs) | isSpace x = removeWhitespace xs
+removeWhitespace (x:xs) = x : removeWhitespace xs
+
 normalizePhone :: String -> Validation String
-normalizePhone = todo
+normalizePhone s = let normalized = removeWhitespace s
+                   in  check (length normalized <= 10) "Too long" normalized
+                       *> traverse (\c -> check (isDigit c) ("Invalid character: " ++ [c]) c) normalized
 
 ------------------------------------------------------------------------------
 -- Ex 9: Parsing expressions. The Expression type describes an
