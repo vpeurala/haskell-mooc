@@ -236,7 +236,16 @@ danger coord queens =
 -- solution to this version. Any working solution is okay in this exercise.)
 
 prettyPrint2 :: Size -> Stack -> String
-prettyPrint2 = todo
+prettyPrint2 size queens =
+  let board = [(row, col) | row <- [1..size], col <- [1..size]]
+  in  newlines $ map printCoord board
+  where printCoord c = if any (c ==) queens
+                       then 'Q'
+                       else if danger c queens
+                       then '#'
+                       else '.'
+        newlines [] = ""
+        newlines xs = take size xs ++ "\n" ++ newlines (drop size xs)
 
 --------------------------------------------------------------------------------
 -- Ex 6: Now that we can check if a piece can be safely placed into a square in
