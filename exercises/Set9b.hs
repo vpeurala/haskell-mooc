@@ -4,6 +4,8 @@ import Mooc.Todo
 
 import Data.List
 
+import Debug.Trace
+
 --------------------------------------------------------------------------------
 -- Ex 1: In this exercise set, we'll solve the N Queens problem step by step.
 -- N Queens is a generalisation of the Eight Queens problem described in
@@ -286,14 +288,15 @@ prettyPrint2 size queens =
 --     Q#######
 
 fixFirst :: Size -> Stack -> Maybe Stack
+fixFirst n [] = Nothing
 fixFirst n s =
   let first = head s
       rest  = tail s
       (row, col) = first
-  in  if not $ danger first rest
-      then Just $ first : rest
-      else if col == n
+  in  if col > n
       then Nothing
+      else if not $ danger first rest
+      then Just $ first : rest
       else fixFirst n ((nextCol first):rest)
 
 --------------------------------------------------------------------------------
@@ -320,6 +323,7 @@ continue s@(first:rest) = (nextRow first):s
 
 backtrack :: Stack -> Stack
 backtrack (first:second:rest) = (nextCol second):rest
+backtrack xs = error $ "backtrack called on list " ++ show xs
 
 --------------------------------------------------------------------------------
 -- Ex 8: Let's take a step. Our algorithm solves the problem (in a
@@ -388,7 +392,9 @@ backtrack (first:second:rest) = (nextCol second):rest
 --     step 8 [(6,1),(5,4),(4,2),(3,5),(2,3),(1,1)] ==> [(5,5),(4,2),(3,5),(2,3),(1,1)]
 
 step :: Size -> Stack -> Stack
-step = todo
+step n s = case fixFirst n s of
+             (Just s') -> continue s'
+             Nothing   -> backtrack s
 
 --------------------------------------------------------------------------------
 -- Ex 9: Let's solve our puzzle! The function finish takes a partial
@@ -402,8 +408,19 @@ step = todo
 -- After this, it's just a matter of calling `finish n [(1,1)]` to
 -- solve the n queens problem.
 
+noQueensThreatEachOther :: Stack -> Bool
+noQueensThreatEachOther [] = True
+noQueensThreatEachOther (x:xs) = not $ danger x xs && noQueensThreatEachOther xs
+
+isComplete :: Size -> Stack -> Bool
+isComplete n s | length s == n = noQueensThreatEachOther s
+isComplete n s | otherwise = False
+
 finish :: Size -> Stack -> Stack
-finish = todo
+finish n s =
+  if not $ isComplete n s
+  then finish n $ step n s
+  else s
 
 solve :: Size -> Stack
 solve n = finish n [(1,1)]
