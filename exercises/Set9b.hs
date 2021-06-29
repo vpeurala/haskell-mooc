@@ -316,10 +316,10 @@ fixFirst n s =
 -- Hint: Remember nextRow and nextCol? Use them!
 
 continue :: Stack -> Stack
-continue s = todo
+continue s@(first:rest) = (nextRow first):s
 
 backtrack :: Stack -> Stack
-backtrack s = todo
+backtrack (first:second:rest) = (nextCol second):rest
 
 --------------------------------------------------------------------------------
 -- Ex 8: Let's take a step. Our algorithm solves the problem (in a
