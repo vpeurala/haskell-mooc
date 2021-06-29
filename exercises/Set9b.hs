@@ -286,7 +286,15 @@ prettyPrint2 size queens =
 --     Q#######
 
 fixFirst :: Size -> Stack -> Maybe Stack
-fixFirst n s = todo
+fixFirst n s =
+  let first = head s
+      rest  = tail s
+      (row, col) = first
+  in  if not $ danger first rest
+      then Just $ first : rest
+      else if col == n
+      then Nothing
+      else fixFirst n ((nextCol first):rest)
 
 --------------------------------------------------------------------------------
 -- Ex 7: We need two helper functions for stack management.
