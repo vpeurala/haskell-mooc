@@ -197,7 +197,11 @@ type Candidate = Coord
 type Stack     = [Coord]
 
 danger :: Candidate -> Stack -> Bool
-danger = todo
+danger coord queens =
+  any (sameRow coord) queens
+  || any (sameCol coord) queens
+  || any (sameDiag coord) queens
+  || any (sameAntidiag coord) queens
 
 --------------------------------------------------------------------------------
 -- Ex 5: In this exercise, the task is to write a modified version of
