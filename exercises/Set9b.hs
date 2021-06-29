@@ -47,10 +47,10 @@ type Col   = Int
 type Coord = (Row, Col)
 
 nextRow :: Coord -> Coord
-nextRow (i,j) = todo
+nextRow (y, x) = (y + 1, 1)
 
 nextCol :: Coord -> Coord
-nextCol (i,j) = todo
+nextCol (y, x) = (y, x + 1)
 
 --------------------------------------------------------------------------------
 -- Ex 2: Implement the function prettyPrint that, given the size of
@@ -100,7 +100,15 @@ nextCol (i,j) = todo
 -- takes O(n^3) time. Just ignore the previous sentence, if you're not familiar
 -- with the O-notation.)
 prettyPrint :: Size -> [Coord] -> String
-prettyPrint = todo
+prettyPrint size queens =
+  let dotgrid = (intercalate "\n" . replicate size . replicate size $ '.') ++ "\n"
+  in  placeQueens dotgrid queens
+  where placeQueens dotgrid [] = dotgrid
+        placeQueens dotgrid (q:qs) = placeQueens (placeQueen dotgrid q) qs
+        placeQueen dotgrid (row, col) =
+          take ((row - 1) * (size + 1) + (col - 1)) dotgrid ++
+          "Q" ++
+          drop ((row - 1) * (size + 1) + col) dotgrid
 
 --------------------------------------------------------------------------------
 -- Ex 3: The task in this exercise is to define the relations sameRow, sameCol,
