@@ -60,7 +60,7 @@ interleave (a:as) (b:bs) = a:b:interleave as bs
 -- Hint: remember the functions cycle and zip?
 
 deal :: [String] -> [String] -> [(String,String)]
-deal = todo
+deal players cards = zip cards (cycle players)
 
 ------------------------------------------------------------------------------
 -- Ex 4: Compute a running average. Go through a list of Doubles and
