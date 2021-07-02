@@ -18,7 +18,7 @@ import Data.List
 --  +++ OK, passed 1 test.
 
 isSorted :: (Show a, Ord a) => [a] -> Property
-isSorted = todo
+isSorted xs = sort xs === xs
 
 ------------------------------------------------------------------------------
 -- Ex 2: In this and the following exercises, we'll build a suite of
