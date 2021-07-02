@@ -137,7 +137,7 @@ instance Foldable List where
 
 instance Foldable TwoList where
   foldr f init TwoEmpty = init
-  foldr f init (TwoNode x y xs) = todo
+  foldr f init (TwoNode x y xs) = f x $ f y $ foldr f init xs
 
 ------------------------------------------------------------------------------
 -- Ex 10: (Tricky!) Fun a is a type that wraps a function Int -> a.
