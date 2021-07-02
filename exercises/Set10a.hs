@@ -78,7 +78,7 @@ deal players cards = zip cards (cycle players)
 
 
 averages :: [Double] -> [Double]
-averages = todo
+averages = map (uncurry (/)) . drop 1 . scanl (\(sum', len) el -> (sum' + el, len + 1)) (0, 0)
 
 ------------------------------------------------------------------------------
 -- Ex 5: Given two lists, xs and ys, and an element z, generate an
