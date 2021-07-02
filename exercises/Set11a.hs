@@ -99,8 +99,8 @@ readUntil f = readW f (return [])
 
 countdownPrint :: Int -> IO ()
 countdownPrint n = do
-  putStrLn (show n)
-  if (n == 0)
+  print n
+  if n == 0
   then return ()
   else countdownPrint (n - 1)
 
