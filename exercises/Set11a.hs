@@ -133,7 +133,11 @@ isums n = go n 0
 -- argument has type IO Bool.
 
 whenM :: IO Bool -> IO () -> IO ()
-whenM cond op = todo
+whenM cond op = do
+  cond' <- cond
+  if cond'
+  then op
+  else return ()
 
 ------------------------------------------------------------------------------
 -- Ex 9: implement the while loop. while condition operation should
