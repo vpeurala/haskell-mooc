@@ -50,7 +50,7 @@ isSorted xs = sort xs === xs
 --  +++ OK, passed 1 test.
 
 sumIsLength :: Show a => [a] -> [(a,Int)] -> Property
-sumIsLength input output = todo
+sumIsLength input output = length input === sum (map snd output)
 
 -- This is a function that passes the sumIsLength test but is wrong
 freq1 :: Eq a => [a] -> [(a,Int)]
