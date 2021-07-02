@@ -98,7 +98,12 @@ readUntil f = readW f (return [])
 -- Ex 6: given n, print the numbers from n to 0, one per line
 
 countdownPrint :: Int -> IO ()
-countdownPrint n = todo
+countdownPrint n = do
+  putStrLn (show n)
+  if (n == 0)
+  then return ()
+  else countdownPrint (n - 1)
+
 
 ------------------------------------------------------------------------------
 -- Ex 7: isums n should read n numbers from the user (one per line) and
