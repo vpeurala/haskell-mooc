@@ -87,10 +87,13 @@ class MySeq a where
   myseq :: a -> b -> b
 
 instance MySeq Bool where
-  myseq = todo
+  myseq True b = b
+  myseq False b = b
 
 instance MySeq Int where
-  myseq = todo
+  myseq 0 b = b
+  myseq n b = b
 
 instance MySeq [a] where
-  myseq = todo
+  myseq [] b = b
+  myseq a b = b
