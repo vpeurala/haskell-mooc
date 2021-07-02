@@ -78,7 +78,7 @@ deal players cards = zip cards (cycle players)
 
 
 averages :: [Double] -> [Double]
-averages = map (uncurry (/)) . drop 1 . scanl (\(sum', len) el -> (sum' + el, len + 1)) (0, 0)
+averages = map (uncurry (/)) . tail . scanl (\(sum', len) el -> (sum' + el, len + 1)) (0, 0)
 
 ------------------------------------------------------------------------------
 -- Ex 5: Given two lists, xs and ys, and an element z, generate an
@@ -96,7 +96,7 @@ averages = map (uncurry (/)) . drop 1 . scanl (\(sum', len) el -> (sum' + el, le
 --   take 10 (alternate [1,2] [3,4,5] 0) ==> [1,2,0,3,4,5,0,1,2,0]
 
 alternate :: [a] -> [a] -> a -> [a]
-alternate xs ys z = todo
+alternate xs ys z = cycle (xs ++ [z] ++ ys ++ [z])
 
 ------------------------------------------------------------------------------
 -- Ex 6: Check if the length of a list is at least n. Make sure your
