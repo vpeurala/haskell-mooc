@@ -135,7 +135,11 @@ hFetchLines h = do
 -- handle.
 
 hSelectLines :: Handle -> [Int] -> IO [String]
-hSelectLines h nums = todo
+hSelectLines h nums = do
+  lines <- hFetchLines h
+  let nl = zip [1..] lines
+  let selectedLines = map snd $ filter (\(num, line) -> num `elem` nums) nl
+  return selectedLines
 
 ------------------------------------------------------------------------------
 -- Ex 7: In this exercise we see how a program can be split into a
