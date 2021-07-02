@@ -191,5 +191,14 @@ play room [] = [describe room]
 play room (d:ds) = case move room d of Nothing -> [describe room]
                                        Just r -> describe room : play r ds
 
+maze1 :: Room
+maze1 = Room "Maze" [("Left", maze2), ("Right", maze3)]
+
+maze2 :: Room
+maze2 = Room "Deeper in the maze" [("Left", maze3), ("Right", maze1)]
+
+maze3 :: Room
+maze3 = Room "Elsewhere in the maze" [("Left", maze1), ("Right", maze2)]
+
 maze :: Room
-maze = todo
+maze = maze1
