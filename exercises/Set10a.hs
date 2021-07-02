@@ -143,7 +143,12 @@ chunks _ _ | otherwise = []
 --   ignorecase "abC" == ignorecase "ABc"  ==>  True
 --   ignorecase "acC" == ignorecase "ABc"  ==>  False
 
-ignorecase = todo
+newtype IgnoreCase = IgnoreCase String
+
+instance Eq IgnoreCase where
+  (IgnoreCase s1) == (IgnoreCase s2) = map toLower s1 == map toLower s2
+
+ignorecase s = IgnoreCase s
 
 ------------------------------------------------------------------------------
 -- Ex 9: Here's the Room type and some helper functions from the
