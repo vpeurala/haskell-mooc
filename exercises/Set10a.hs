@@ -108,7 +108,7 @@ alternate xs ys z = cycle (xs ++ [z] ++ ys ++ [z])
 --   lengthAtLeast 10 [0..]  ==> True
 
 lengthAtLeast :: Int -> [a] -> Bool
-lengthAtLeast = todo
+lengthAtLeast n xs = length (take n xs) == n
 
 ------------------------------------------------------------------------------
 -- Ex 7: The function chunks should take in a list, and a number n,
