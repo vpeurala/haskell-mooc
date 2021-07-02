@@ -58,7 +58,17 @@ greet2 = do
 --   ["alice","bob","carl"]
 
 readWords :: Int -> IO [String]
-readWords n = todo
+readWords n = readW n (return [])
+  where
+    readW :: Int -> IO [String] -> IO [String]
+    readW 0 xs = xs
+    readW n xs = do
+      line <- getLine
+      xs' <- xs
+      let currentLines = line:xs'
+      allLines <- readW (n - 1) (return currentLines)
+      return $ sort allLines
+
 
 ------------------------------------------------------------------------------
 -- Ex 5: define the IO operation readUntil f, which reads lines from
