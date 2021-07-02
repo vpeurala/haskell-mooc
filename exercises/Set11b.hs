@@ -87,7 +87,10 @@ doubleCall op = do
 --   3. return the result (of type b)
 
 compose :: (a -> IO b) -> (c -> IO a) -> c -> IO b
-compose op1 op2 c = todo
+compose op1 op2 c = do
+  a <- op2 c
+  b <- op1 a
+  return b
 
 ------------------------------------------------------------------------------
 -- Ex 5: Reading lines from a file. The module System.IO defines
