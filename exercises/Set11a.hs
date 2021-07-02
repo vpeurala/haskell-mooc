@@ -85,7 +85,14 @@ readWords n = readW n (return [])
 --   ["bananas","garlic","pakchoi"]
 
 readUntil :: (String -> Bool) -> IO [String]
-readUntil f = todo
+readUntil f = readW f (return [])
+  where readW :: (String -> Bool) -> IO [String] -> IO [String]
+        readW f' xs = do
+          xs' <- xs
+          line <- getLine
+          if f' line
+          then return $ reverse xs'
+          else readW f' (return $ line:xs')
 
 ------------------------------------------------------------------------------
 -- Ex 6: given n, print the numbers from n to 0, one per line
