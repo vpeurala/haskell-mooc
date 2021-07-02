@@ -35,7 +35,11 @@ appendAll ref xs = modifyIORef ref (\s -> concat $ s : xs)
 --   "x"
 
 swapIORefs :: IORef a -> IORef a -> IO ()
-swapIORefs = todo
+swapIORefs ref1 ref2 = do
+  val1 <- readIORef ref1
+  val2 <- readIORef ref2
+  modifyIORef ref1 (const val2)
+  modifyIORef ref2 (const val1)
 
 ------------------------------------------------------------------------------
 -- Ex 3: sometimes one bumps into IO operations that return IO
