@@ -125,7 +125,8 @@ inBoth f1 f2 =
 --   length (LNode 1 (LNode 2 (LNode 3 Empty))) ==> 3
 
 instance Foldable List where
-  foldr = todo
+  foldr f init Empty = init
+  foldr f init (LNode x xs) = x `f` foldr f init xs
 
 ------------------------------------------------------------------------------
 -- Ex 9: Implement the instance Foldable TwoList.
