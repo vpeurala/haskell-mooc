@@ -126,7 +126,8 @@ lengthAtLeast n xs = length (take n xs) == n
 --   take 4 (chunks 3 [0..]) ==> [[0,1,2],[1,2,3],[2,3,4],[3,4,5]]
 
 chunks :: Int -> [a] -> [[a]]
-chunks = todo
+chunks n xs | lengthAtLeast n xs = take n xs : chunks n (tail xs)
+chunks _ _ | otherwise = []
 
 ------------------------------------------------------------------------------
 -- Ex 8: Define a newtype called IgnoreCase, that wraps a value of
