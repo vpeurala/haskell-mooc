@@ -7,6 +7,7 @@ import Control.Monad.Trans.State
 import Data.Char
 import Data.IORef
 import Data.List
+import Data.Maybe
 
 
 ------------------------------------------------------------------------------
@@ -149,14 +150,18 @@ maze1 = [("Entry",["Pit","Corridor 1"])
 
 
 visit :: [(String,[String])] -> String -> State [String] ()
-visit maze place = todo
+visit maze place = do
+  visited <- get
+  if place `elem` visited
+  then return ()
+  else put (place : visited) >> mapM_ (visit maze) (fromJust $ lookup place maze)
 
 -- Now you should be able to implement path using visit. If you run
 -- visit on a place using an empty state, you'll get a state that
 -- lists all the places that are reachable from the starting place.
 
 path :: [(String,[String])] -> String -> String -> Bool
-path maze place1 place2 = todo
+path maze place1 place2 = place2 `elem` execState (visit maze place1) []
 
 ------------------------------------------------------------------------------
 -- Ex 4: Given two lists, ks and ns, find numbers i and j from ks,
