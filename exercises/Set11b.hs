@@ -65,7 +65,10 @@ swapIORefs ref1 ref2 = do
 --        replicateM l getLine
 
 doubleCall :: IO (IO a) -> IO a
-doubleCall op = todo
+doubleCall op = do
+  resOp <- op
+  res <- resOp
+  return res
 
 ------------------------------------------------------------------------------
 -- Ex 4: implement the analogue of function composition (the (.)
