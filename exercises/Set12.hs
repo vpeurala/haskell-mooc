@@ -100,7 +100,7 @@ instance Functor TwoList where
 --   count 'c' (Just 'c') ==> 1
 
 count :: (Eq a, Foldable f) => a -> f a -> Int
-count = todo
+count x = foldr (\cur acc -> if cur == x then acc + 1 else acc) 0
 
 ------------------------------------------------------------------------------
 -- Ex 7: Return all elements that are in two Foldables, as a list.
