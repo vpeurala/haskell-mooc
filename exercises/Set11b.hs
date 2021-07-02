@@ -180,4 +180,10 @@ counter ("print",n) = (True,show n,n)
 counter ("quit",n)  = (False,"bye bye",n)
 
 interact' :: ((String,st) -> (Bool,String,st)) -> st -> IO st
-interact' f state = todo
+interact' f state = do
+  line <- getLine
+  let (bool, str, newState) = f (line, state)
+  putStrLn str
+  if bool
+  then interact' f newState
+  else return newState
