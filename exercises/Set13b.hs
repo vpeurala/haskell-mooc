@@ -86,7 +86,12 @@ perhapsIncrement True x = modify (+x)
 perhapsIncrement False _ = return ()
 
 mapM2 :: Monad m => (a -> b -> m c) -> [a] -> [b] -> m [c]
-mapM2 op xs ys = todo
+mapM2 _ _ [] = return []
+mapM2 _ [] _ = return []
+mapM2 op (a:as) (b:bs) = do
+  first <- op a b
+  rest <- mapM2 op as bs
+  return (first:rest)
 
 ------------------------------------------------------------------------------
 -- Ex 3: Finding paths.
