@@ -177,7 +177,8 @@ path maze place1 place2 = place2 `elem` execState (visit maze place1) []
 -- PS. The tests don't care about the order of results.
 
 findSum2 :: [Int] -> [Int] -> [(Int,Int,Int)]
-findSum2 ks ns = todo
+findSum2 ks ns =
+  [(i, j, n) | i <- ks, j <- ks, n <- ns, i + j == n]
 
 ------------------------------------------------------------------------------
 -- Ex 5: compute all possible sums of elements from the given
