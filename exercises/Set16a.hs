@@ -217,8 +217,26 @@ data Arg = Number Int | Variable Char
 data Expression = Plus Arg Arg | Minus Arg Arg
   deriving (Show, Eq)
 
+arbitraryNumber = do
+  i <- chooseInt (0, 10)
+  return $ Number i
+
+arbitraryVariable = do
+  c <- elements "abcxyz"
+  return $ Variable c
+
 instance Arbitrary Arg where
-  arbitrary = todo
+  arbitrary = oneof [arbitraryNumber, arbitraryVariable]
+
+arbitraryPlus = do
+  arg1 <- arbitrary :: Gen Arg
+  arg2 <- arbitrary :: Gen Arg
+  return $ Plus arg1 arg2
+
+arbitraryMinus = do
+  arg1 <- arbitrary :: Gen Arg
+  arg2 <- arbitrary :: Gen Arg
+  return $ Minus arg1 arg2
 
 instance Arbitrary Expression where
-  arbitrary = todo
+  arbitrary = oneof [arbitraryPlus, arbitraryMinus]
