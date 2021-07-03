@@ -139,7 +139,14 @@ freq3 (x:xs) = [(x,1 + length (filter (==x) xs))]
 --  +++ OK, passed 100 tests.
 
 frequenciesProp :: ([Char] -> [(Char,Int)]) -> NonEmptyList Char -> Property
-frequenciesProp freq input = todo
+frequenciesProp freq input =
+  conjoin [
+    sumIsLength nonEmptyInput nonEmptyOutput,
+    inputInOutput nonEmptyInput nonEmptyOutput,
+    outputInInput nonEmptyInput nonEmptyOutput
+  ] where
+      nonEmptyInput = getNonEmpty input
+      nonEmptyOutput = freq nonEmptyInput
 
 frequencies :: Eq a => [a] -> [(a,Int)]
 frequencies [] = []
