@@ -195,12 +195,19 @@ simplify (RationalNumber num den) = RationalNumber (num `div` gcd_) (den `div` g
 --   signum (RationalNumber 0 2)             ==> RationalNumber 0 1
 
 instance Num RationalNumber where
-  p + q = todo
-  p * q = todo
-  abs q = todo
-  signum q = todo
-  fromInteger x = todo
-  negate q = todo
+  (RationalNumber num1 den1) + (RationalNumber num2 den2) = simplify $
+    RationalNumber (num1 * (lcm_ `div` den1) + num2 * (lcm_ `div` den2)) lcm_
+    where lcm_ = lcm den1 den2
+  (RationalNumber num1 den1) * (RationalNumber num2 den2) = simplify $ RationalNumber (num1 * num2) (den1 * den2)
+  abs (RationalNumber num den) = RationalNumber (abs num) (abs den)
+  signum (RationalNumber num den)
+    | mult < 0 = -1
+    | mult == 0 = 0
+    | otherwise = 1
+    where
+      mult = num * den
+  fromInteger n = RationalNumber n 1
+  negate (RationalNumber num den) = RationalNumber (negate num) den
 
 ------------------------------------------------------------------------------
 -- Ex 11: a class for adding things. Define a class Addable with a
