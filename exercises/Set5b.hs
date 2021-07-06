@@ -200,7 +200,10 @@ walk (StepR:steps) (Node v sub1 sub2) = walk steps sub2
 --   set [StepL,StepR] 1 (Node 0 Empty Empty)  ==>  (Node 0 Empty Empty)
 
 set :: [Step] -> a -> Tree a -> Tree a
-set path val tree = todo
+set _ _ Empty = Empty
+set [] val (Node v sub1 sub2) = Node val sub1 sub2
+set (StepL:steps) val (Node v sub1 sub2) = Node v (set steps val sub1) sub2
+set (StepR:steps) val (Node v sub1 sub2) = Node v sub1 (set steps val sub2)
 
 ------------------------------------------------------------------------------
 -- Ex 10: given a value and a tree, return a path that goes from the
