@@ -219,4 +219,11 @@ set (StepR:steps) val (Node v sub1 sub2) = Node v sub1 (set steps val sub2)
 --                    (Node 5 Empty Empty))                     ==>  Just [StepL,StepR]
 
 search :: Eq a => a -> Tree a -> Maybe [Step]
-search = todo
+search val tree =
+  searchWithSteps [] val tree
+    where searchWithSteps steps val Empty = Nothing
+          searchWithSteps steps val (Node v sub1 sub2) | val == v = Just $ reverse steps
+          searchWithSteps steps val (Node v sub1 sub2) | otherwise =
+            case (searchWithSteps (StepL:steps) val sub1) of
+              Nothing -> searchWithSteps (StepR:steps) val sub2
+              (Just v) -> Just v
