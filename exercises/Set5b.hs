@@ -110,8 +110,8 @@ mapTree f (Node v a b) = Node (f v) (mapTree f a) (mapTree f b)
 --                 (Node 3 Empty Empty))
 
 cull :: Eq a => a -> Tree a -> Tree a
-cull val Empty = Empty
-cull val (Node v rest1 rest2) | val == v  = Empty
+cull _ Empty                              = Empty
+cull val (Node v _ _) | val == v          = Empty
 cull val (Node v rest1 rest2) | otherwise = Node v (cull val rest1) (cull val rest2)
 
 ------------------------------------------------------------------------------
@@ -154,7 +154,10 @@ cull val (Node v rest1 rest2) | otherwise = Node v (cull val rest1) (cull val re
 --                     (Node 3 Empty Empty))   ==>   True
 
 isOrdered :: Ord a => Tree a -> Bool
-isOrdered = todo
+isOrdered Empty = True
+isOrdered (Node v sub1 sub2) = allValues (<= v) sub1 && allValues (>= v) sub2 && isOrdered sub1 && isOrdered sub2
+
+
 
 ------------------------------------------------------------------------------
 -- Ex 8: a path in a tree can be represented as a list of steps that
