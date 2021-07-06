@@ -153,7 +153,7 @@ data RationalNumber = RationalNumber Integer Integer
   deriving Show
 
 instance Eq RationalNumber where
-  (RationalNumber num1 den1) == (RationalNumber num2 den2) = num1 * den2 = num2 * den1
+  (RationalNumber num1 den1) == (RationalNumber num2 den2) = num1 * den2 == num2 * den1
 
 ------------------------------------------------------------------------------
 -- Ex 9: implement the function simplify, which simplifies rational a
