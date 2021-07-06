@@ -188,19 +188,31 @@ instance (Ord a) => Monoid (Set a) where
 
 data Operation1 = Add1 Int Int
                 | Subtract1 Int Int
+                | Multiply1 Int Int
   deriving Show
 
 compute1 :: Operation1 -> Int
 compute1 (Add1 i j) = i+j
 compute1 (Subtract1 i j) = i-j
+compute1 (Multiply1 i j) = i*j
 
 show1 :: Operation1 -> String
-show1 = todo
+show1 (Add1 i j) = (show i) ++ "+" ++ (show j)
+show1 (Subtract1 i j) = (show i) ++ "-" ++ (show j)
+show1 (Multiply1 i j) = (show i) ++ "*" ++ (show j)
 
 data Add2 = Add2 Int Int
-  deriving Show
 data Subtract2 = Subtract2 Int Int
-  deriving Show
+data Multiply2 = Multiply2 Int Int
+
+instance Show Add2 where
+  show (Add2 i j) = (show i) ++ "+" ++ (show j)
+
+instance Show Subtract2 where
+  show (Subtract2 i j) = (show i) ++ "-" ++ (show j)
+
+instance Show Multiply2 where
+  show (Multiply2 i j) = (show i) ++ "*" ++ (show j)
 
 class Operation2 op where
   compute2 :: op -> Int
@@ -211,6 +223,11 @@ instance Operation2 Add2 where
 instance Operation2 Subtract2 where
   compute2 (Subtract2 i j) = i-j
 
+instance Operation2 Multiply2 where
+  compute2 (Multiply2 i j) = i*j
+
+show2 :: (Show op, Operation2 op) => op -> String
+show2 = show
 
 ------------------------------------------------------------------------------
 -- Ex 9: validating passwords. Below you'll find a type
