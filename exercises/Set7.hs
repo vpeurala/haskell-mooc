@@ -256,7 +256,11 @@ data PasswordRequirement =
   deriving Show
 
 passwordAllowed :: String -> PasswordRequirement -> Bool
-passwordAllowed = todo
+passwordAllowed password (And sub1 sub2) = passwordAllowed password sub1 && passwordAllowed password sub2
+passwordAllowed password (Or sub1 sub2) = passwordAllowed password sub1 || passwordAllowed password sub2
+passwordAllowed password (MinimumLength minLength) = length password >= minLength
+passwordAllowed password (ContainsSome chars) = any (`elem` password) chars
+passwordAllowed password (DoesNotContain chars) = not $ any (`elem` password) chars
 
 ------------------------------------------------------------------------------
 -- Ex 10: a DSL for simple arithmetic expressions with addition and
