@@ -282,17 +282,21 @@ passwordAllowed password (DoesNotContain chars) = not $ any (`elem` password) ch
 --     ==> "(3*(1+1))"
 --
 
-data Arithmetic = Todo
+data Arithmetic = Literal Integer | Operation String Arithmetic Arithmetic
   deriving Show
 
 literal :: Integer -> Arithmetic
-literal = todo
+literal = Literal
 
 operation :: String -> Arithmetic -> Arithmetic -> Arithmetic
-operation = todo
+operation = Operation
 
 evaluate :: Arithmetic -> Integer
-evaluate = todo
+evaluate (Literal n) = n
+evaluate (Operation glyph lhs rhs) = case glyph of
+  "+" -> evaluate lhs + evaluate rhs
+  "*" -> evaluate lhs * evaluate rhs
 
 render :: Arithmetic -> String
-render = todo
+render (Literal n) = show n
+render (Operation glyph lhs rhs) = "(" ++ render lhs ++ glyph ++ render rhs ++ ")"
