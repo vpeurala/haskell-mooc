@@ -92,10 +92,19 @@ add m (Set l) = if elem m l then Set l else Set (sort (m:l))
 data Event = AddEggs | AddFlour | AddSugar | Mix | Bake
   deriving (Eq,Show)
 
-data State = Start | Error | Finished
+data State = Start | EggsAdded | FlourAddedWaitingForSugar | SugarAddedWaitingForFlour | ReadyToMix | Mixed | Error | Finished
   deriving (Eq,Show)
 
-step = todo
+step :: State -> Event -> State
+step Start AddEggs = EggsAdded
+step EggsAdded AddFlour = FlourAddedWaitingForSugar
+step FlourAddedWaitingForSugar AddSugar = ReadyToMix
+step EggsAdded AddSugar = SugarAddedWaitingForFlour
+step SugarAddedWaitingForFlour AddFlour = ReadyToMix
+step ReadyToMix Mix = Mixed
+step Mixed Bake = Finished
+step Finished _ = Finished
+step _ _ = Error
 
 -- do not edit this
 bake :: [Event] -> State
@@ -123,7 +132,7 @@ average (n :| ns) = (n + avgList ns * fromIntegral (length ns)) / fromIntegral (
 
 reverseNonEmpty :: NonEmpty a -> NonEmpty a
 reverseNonEmpty (n :| []) = n :| []
-reverseNonEmpty (n :| ns) = head (reverse ns) :| tail (reverse ns) ++ [n]
+reverseNonEmpty (n :| ns) = last ns :| tail (reverse ns) ++ [n]
 
 ------------------------------------------------------------------------------
 -- Ex 6: implement Semigroup instances for the Distance, Time and
