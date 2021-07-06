@@ -161,6 +161,11 @@ instance Semigroup Velocity where
 --
 -- What are the class constraints for the instances?
 
+instance (Ord a) => Semigroup (Set a) where
+  (<>) (Set as) (Set bs) = Set (nub $ sort $ as ++ bs)
+
+instance (Ord a) => Monoid (Set a) where
+  mempty = emptySet
 
 ------------------------------------------------------------------------------
 -- Ex 8: below you'll find two different ways of representing
