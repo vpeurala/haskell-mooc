@@ -176,7 +176,10 @@ data Step = StepL | StepR
 --   walk [StepL,StepL] (Node 1 (Node 2 Empty Empty) Empty)  ==>  Nothing
 
 walk :: [Step] -> Tree a -> Maybe a
-walk = todo
+walk _ Empty = Nothing
+walk [] (Node v sub1 sub2) = Just v
+walk (StepL:steps) (Node v sub1 sub2) = walk steps sub1
+walk (StepR:steps) (Node v sub1 sub2) = walk steps sub2
 
 ------------------------------------------------------------------------------
 -- Ex 9: given a tree, a path and a value, set the value at the end of
