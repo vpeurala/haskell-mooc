@@ -470,8 +470,28 @@ checkered = flipBlend largeVerticalStripes2
 data Blur = Blur
   deriving Show
 
+{-
+blendColor :: Color -> Color -> Color
+blendColor (Color r1 g1 b1) (Color r2 g2 b2) = Color ((r1 + r2) `div` 2) ((g1 + g2) `div` 2) ((b1 + b2) `div` 2)
+-}
+
+averageColors :: (Color, Color, Color, Color, Color) -> Color
+averageColors ( Color r1 g1 b1
+              , Color r2 g2 b2
+              , Color r3 g3 b3
+              , Color r4 g4 b4
+              , Color r5 g5 b5 ) =
+                Color ((r1 + r2 + r3 + r4 + r5) `div` 5)
+                      ((g1 + g2 + g3 + g4 + g5) `div` 5)
+                      ((b1 + b2 + b3 + b4 + b5) `div` 5)
+
 instance Transform Blur where
-  apply = todo
+  apply Blur pic@(Picture p) = Picture f
+    where f c@(Coord x y) = averageColors ( p c
+                                          , p (Coord (x - 1) y)
+                                          , p (Coord (x + 1) y)
+                                          , p (Coord x (y - 1))
+                                          , p (Coord x (y + 1)))
 ------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------
