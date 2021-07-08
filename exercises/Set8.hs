@@ -328,7 +328,15 @@ stripes a b = Picture f
 --       ["000000","000000","000000","000000","000000"]]
 
 paint :: Picture -> Shape -> Picture -> Picture
-paint pat shape base = todo
+paint pat@(Picture p) shape@(Shape s) base@(Picture b) = Picture f
+  where f c@(Coord x y) | contains shape x y = p c
+                        | otherwise = b c
+
+{-
+paintSolid :: Color -> Shape -> Picture -> Picture
+paintSolid color (Shape s) (Picture base) = Picture f
+  where f c = if s c then color else base c
+-}
 ------------------------------------------------------------------------------
 
 -- Here's a patterned version of the snowman example. See it by running:
