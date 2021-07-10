@@ -210,7 +210,7 @@ rob from to = balance from +> withdrawOp from +> depositOp to
 
 update :: State Int ()
 update = modify (\x -> x * 2 + 1)
-  
+
 
 ------------------------------------------------------------------------------
 -- Ex 8: Checking that parentheses are balanced with the State monad.
@@ -238,7 +238,7 @@ update = modify (\x -> x * 2 + 1)
 --   parensMatch "(()))("      ==> False
 
 paren :: Char -> State Int ()
-paren = todo
+paren c = modify (\x -> if x == -1 then -1 else if c == '(' then (x + 1) else if c == ')' then (x - 1) else x)
 
 parensMatch :: String -> Bool
 parensMatch s = count == 0
