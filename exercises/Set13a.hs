@@ -269,7 +269,11 @@ parensMatch s = count == 0
 -- PS. The order of the list of pairs doesn't matter
 
 count :: Eq a => a -> State [(a,Int)] ()
-count x = todo
+count x = do
+  st <- get
+  case lookup x st of
+    Nothing -> modify ((x, 1):)
+    Just n -> modify (\l -> (x, n + 1):delete (x, n) l)
 
 ------------------------------------------------------------------------------
 -- Ex 10: Implement the operation occurrences, which
