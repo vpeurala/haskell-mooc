@@ -9,6 +9,8 @@ import Data.List
 import Data.Maybe
 import qualified Data.Map as Map
 
+import Debug.Trace
+
 import Examples.Bank
 
 
@@ -295,4 +297,6 @@ count x = do
 --    ==> (4,[(2,1),(3,1),(4,1),(7,1)])
 
 occurrences :: (Eq a) => [a] -> State [(a,Int)] Int
-occurrences xs = todo
+occurrences xs = do
+  mapM_ count xs
+  length <$> get
