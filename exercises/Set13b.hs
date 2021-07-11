@@ -275,7 +275,9 @@ data Result a = MkResult a | NoResult | Failure String deriving (Show,Eq)
 
 instance Functor Result where
   -- The same Functor instance you used in Set12 works here.
-  fmap = todo
+  fmap f (MkResult a) = MkResult (f a)
+  fmap f NoResult     = NoResult
+  fmap f (Failure s)  = Failure s
 
 -- This is an Applicative instance that works for any monad, you
 -- can just ignore it for now. We'll get back to Applicative later.
@@ -285,8 +287,10 @@ instance Applicative Result where
 
 instance Monad Result where
   -- implement return and >>=
-  return = todo
-  (>>=) = todo
+  return = MkResult
+  MkResult a >>= f = f a
+  NoResult >>= _ = NoResult
+  Failure s >>= _ = Failure s
 
 ------------------------------------------------------------------------------
 -- Ex 8: Here is the type SL that combines the State and Logger
