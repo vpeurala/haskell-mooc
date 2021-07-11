@@ -230,7 +230,7 @@ sumBounded :: Int -> [Int] -> Maybe Int
 sumBounded k xs = foldM (f1 k) 0 xs
 
 f1 :: Int -> Int -> Int -> Maybe Int
-f1 k acc x = todo
+f1 k acc x = if (acc + x > k) then Nothing else Just (acc + x)
 
 -- sumNotTwice computes the sum of a list, but counts only the first
 -- occurrence of each value.
@@ -244,7 +244,13 @@ sumNotTwice :: [Int] -> Int
 sumNotTwice xs = fst $ runState (foldM f2 0 xs) []
 
 f2 :: Int -> Int -> State [Int] Int
-f2 acc x = todo
+f2 acc x = do
+  seen <- get
+  if x `elem` seen
+  then return acc
+  else do
+    () <- modify (x:)
+    return (acc + x)
 
 ------------------------------------------------------------------------------
 -- Ex 7: here is the Result type from Set12. Implement a Monad Result
