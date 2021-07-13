@@ -355,7 +355,8 @@ instance Monad SL where
   (SL g) >>= f = SL (\s ->
     let ~(a, s', msgs) = g s
         SL h           = f a
-    in  h s')
+        ~(b, s'', msgs') = h s'
+    in  (b, s'', msgs ++ msgs'))
 
 ------------------------------------------------------------------------------
 -- Ex 9: Implement the operation mkCounter that produces the IO operations
