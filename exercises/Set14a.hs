@@ -137,5 +137,5 @@ countUtf8Chars bs = case decodeUtf8' bs of
 --     ==> [0,1,2,2,1,0,0,1,2,2,1,0,0,1,2,2,1,0,0,1]
 
 pingpong :: B.ByteString -> BL.ByteString
-pingpong = todo
+pingpong bs = BL.cycle $ BL.append (BL.fromStrict bs) (BL.reverse (BL.fromStrict bs))
 
