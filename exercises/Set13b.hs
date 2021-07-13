@@ -351,9 +351,11 @@ instance Applicative SL where
 instance Monad SL where
   -- implement return and >>=
   return x = SL (\s -> (x, s, []))
-  (SL g) >>= f = join $ SL (\s ->
-    let (a, s', msgs) = g s
-    in  (f a, s', msgs))
+
+  (SL g) >>= f = SL (\s ->
+    let ~(a, s', msgs) = g s
+        SL h           = f a
+    in  h s')
 
 ------------------------------------------------------------------------------
 -- Ex 9: Implement the operation mkCounter that produces the IO operations
