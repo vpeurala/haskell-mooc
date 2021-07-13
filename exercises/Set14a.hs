@@ -123,7 +123,9 @@ xorChecksum = B.foldr (\cur acc -> xor acc cur) 0
 --   countUtf8Chars (B.drop 1 (encodeUtf8 (T.pack "åäö"))) ==> Nothing
 
 countUtf8Chars :: B.ByteString -> Maybe Int
-countUtf8Chars = todo
+countUtf8Chars bs = case decodeUtf8' bs of
+  Left _ -> Nothing
+  Right text -> Just $ T.length text
 
 ------------------------------------------------------------------------------
 -- Ex 8: Given a (nonempty) strict ByteString b, generate an infinite
