@@ -106,7 +106,7 @@ byteRange bs | otherwise = B.maximum bs - B.minimum bs
 --   xorChecksum (B.pack []) ==> 0
 
 xorChecksum :: B.ByteString -> Word8
-xorChecksum = todo
+xorChecksum = B.foldr (\cur acc -> xor acc cur) 0
 
 ------------------------------------------------------------------------------
 -- Ex 7: Given a ByteString, compute how many UTF-8 characters it
