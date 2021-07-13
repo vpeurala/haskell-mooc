@@ -212,7 +212,7 @@ encodeResponse t = LB.fromStrict (encodeUtf8 t)
 -- Remember:
 -- type Application = Request -> (Response -> IO ResponseReceived) -> IO ResponseReceived
 simpleServer :: Application
-simpleServer request respond = todo
+simpleServer _ respond = respond (responseLBS status200 [] "BANK")
 
 ------------------------------------------------------------------------------
 -- Ex 6: Now we finally have all the pieces we need to actually
