@@ -384,4 +384,8 @@ instance Monad SL where
 --  4
 
 mkCounter :: IO (IO (), IO Int)
-mkCounter = todo
+mkCounter =
+  (newIORef (0 :: Int)) >>= \ref ->
+  let inc = modifyIORef ref (+1)
+      get' = readIORef ref
+  in  return (inc, get')
