@@ -197,7 +197,7 @@ perform db (Just (Withdraw name amount)) = do
 perform db (Just (Balance name)) = do
   balInt <- balance db name
   return $ T.pack (show balInt)
-perform db Nothing = return "Error"
+perform db Nothing = return "ERROR"
 
 
 ------------------------------------------------------------------------------
