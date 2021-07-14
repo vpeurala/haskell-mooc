@@ -152,7 +152,7 @@ balance connection name = do
 --   parseCommand [T.pack "deposit", T.pack "madoff", T.pack "123456"]
 --     ==> Just (Deposit "madoff" 123456)
 
-data Command = Deposit T.Text Int | Balance T.Text
+data Command = Deposit T.Text Int | Withdraw T.Text Int | Balance T.Text
   deriving (Show, Eq)
 
 parseInt :: T.Text -> Maybe Int
@@ -161,6 +161,7 @@ parseInt = readMaybe . T.unpack
 parseCommand :: [T.Text] -> Maybe Command
 parseCommand ["balance", name] = Just (Balance name)
 parseCommand ["deposit", name, amount] = parseInt amount >>= (Just . Deposit name)
+parseCommand ["withdraw", name, amount] = parseInt amount >>= (Just . Withdraw name)
 parseCommand _ = Nothing
 
 ------------------------------------------------------------------------------
@@ -189,6 +190,9 @@ parseCommand _ = Nothing
 perform :: Connection -> Maybe Command -> IO T.Text
 perform db (Just (Deposit name amount)) = do
   deposit db name amount
+  return "OK"
+perform db (Just (Withdraw name amount)) = do
+  deposit db name (-amount)
   return "OK"
 perform db (Just (Balance name)) = do
   balInt <- balance db name
@@ -245,11 +249,8 @@ simpleServer _ respond = respond (responseLBS status200 [] "BANK")
 server :: Connection -> Application
 server db request respond = do
   let path = pathInfo request
-  mapM_ TIO.putStrLn path
   let cmd = parseCommand path
-  putStrLn $ show cmd
   output <- perform db cmd
-  TIO.putStrLn output
   respond (responseLBS status200 [] (encodeResponse output))
 
 port :: Int
