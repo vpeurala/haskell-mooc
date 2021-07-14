@@ -29,6 +29,8 @@ import Network.HTTP.Types (status200)
 -- Database
 import Database.SQLite.Simple (open,execute,execute_,fromOnly,query,query_,Connection,Only(..),Query(..))
 
+import qualified Data.Text.IO as TIO
+
 ------------------------------------------------------------------------------
 -- Ex 1: Let's start with implementing some database operations. The
 -- database will contain one table, called events, with two columns:
@@ -241,7 +243,14 @@ simpleServer _ respond = respond (responseLBS status200 [] "BANK")
 -- Remember:
 -- type Application = Request -> (Response -> IO ResponseReceived) -> IO ResponseReceived
 server :: Connection -> Application
-server db request respond = todo
+server db request respond = do
+  let path = pathInfo request
+  mapM_ TIO.putStrLn path
+  let cmd = parseCommand path
+  putStrLn $ show cmd
+  output <- perform db cmd
+  TIO.putStrLn output
+  respond (responseLBS status200 [] (encodeResponse output))
 
 port :: Int
 port = 3421
