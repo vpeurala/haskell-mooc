@@ -413,14 +413,14 @@ noQueensThreatEachOther [] = True
 noQueensThreatEachOther (x:xs) = not $ danger x xs && noQueensThreatEachOther xs
 
 isComplete :: Size -> Stack -> Bool
-isComplete n s | length s == n = noQueensThreatEachOther s
+isComplete n s | length s == (n + 1) = noQueensThreatEachOther (tail s)
 isComplete n s | otherwise = False
 
 finish :: Size -> Stack -> Stack
 finish n s =
   if not $ isComplete n s
   then finish n $ step n s
-  else s
+  else tail s
 
 solve :: Size -> Stack
 solve n = finish n [(1,1)]
