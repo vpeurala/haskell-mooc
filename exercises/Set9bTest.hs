@@ -15,13 +15,14 @@ main = score tests
 tests = [ (1, "warmup",         [ ex1_nextRow, ex1_nextCol ])
         , (2, "prettyPrint",    [ ex2_examples, ex2_size, ex2_content, ex2_comm
                                 , ex2_correctness ])
-        , (3, "relations",      [ ex3_sameCol_pos, ex3_sameCol_neg
+        , (3, "relations",      [ ex3_sameRow_pos, ex3_sameRow_neg
+                                , ex3_sameCol_pos, ex3_sameCol_neg
                                 , ex3_sameDiag_pos, ex3_sameDiag_neg
                                 , ex3_sameAntidiag_pos, ex3_sameAntidiag_neg ])
         , (4, "danger",         [ ex4_danger, ex4_danger_neg, ex4_danger_neg_2 ])
         , (5, "prettyPrint2",   [ ex5_size, ex5_content, ex5_comm
                                 , ex5_correctness ])
-        , (6, "fixFirst",       [ ex6_fixFirst_safeZone, ex6_fixFirst_dangerZone ])
+        , (6, "fixFirst",       [ ex6_fixFirst_safeZone, ex6_fixFirst_dangerZone, ex6_fixFirst_outside ])
         , (7, "stackOps",       [ ex7_continue, ex7_backtrack ])
         , (8, "nqueens_step",   [ ex8_step_4, ex8_step_continue, ex8_step_backtrack ])
         , (9, "nqueens_finish", [ ex9_finish_small, ex9_finish_medium, ex9_finish_large ])
@@ -148,6 +149,19 @@ ex2_correctness = property $ do
     (check (1,1) ys)
 
 --------------------------------------------------------------------------------
+
+ex3_sameRow_pos = property $ do
+  (i,j) <- coord
+  let xs = [(i, j + k) | k <- [0..9]]
+  x <- elements xs
+  y <- elements xs
+  return $ $(testing [| sameRow x y |]) (?== True)
+
+ex3_sameRow_neg = property $ do
+  (i,j) <- coord
+  let xs = [(i + k, j) | k <- [1..10]]
+  x <- elements xs
+  return $ $(testing [| sameRow (i,j) x |]) (?== False)
 
 ex3_sameCol_pos = property $ do
   (i,j) <- coord
@@ -307,6 +321,12 @@ ex6_fixFirst_dangerZone = property $ do
       ": " ++ show (intersect row sz))
       (all (`elem` dz) row)
       where row = [(i,k) | k <- [j .. n]]
+
+ex6_fixFirst_outside = property $ do
+  n <- choose (5,10)
+  r <- choose (1,n)
+  c <- choose (n+1,20)
+  return $ $(testing [|fixFirst n [(r,c)]|]) (?==Nothing)
 
 --------------------------------------------------------------------------------
 

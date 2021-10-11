@@ -212,39 +212,45 @@ compose abs bcs = abs >>= (\(a, b) -> case lookup b bcs of
                                         Nothing -> [])
 
 ------------------------------------------------------------------------------
--- Ex 9: Reorder a list using an [(Int,Int)] mapping.
+-- Ex 9: Reorder a list using a list of indices.
 --
--- Given a list of mappings [(from,to)], reorder the list so that the element
--- at the first index (from) goes to the second index (to). You may assume
--- that the list is ordered with respect to the first index (e.g.
--- [(0,0),(1,1),(2,2)], [(0,1),(1,0),(2,2)], [(0,1),(1,2),(2,0)], etc.). You
--- may also assume that for a list of length n, every number from 0 to n - 1
--- (inclusive) appears exactly once as the first index (from) and once as the
--- second index (to).
+-- You are given a list of indices (numbers from 0 to n) and an input
+-- list (of length n). Each index in the index list tells you where to
+-- place the corresponding element from the input list in the output
+-- list.
 --
--- (Mappings of this kind are known as permutations in math, see
--- https://en.wikipedia.org/wiki/Permutation)
+-- For example, if the 3rd element of the index list is 7, and the 3rd
+-- element of the input list is 'a', the output list should have 'a'
+-- at index 7.
 --
--- Implement the function permute that performs the reordering.
+-- (The index lists discussed in this exercise correspond to permutations in
+-- math. In fact, permutations can be multiplied which is a special case of
+-- the compose function in the previous exercise. For more information on
+-- permutations, see https://en.wikipedia.org/wiki/Permutation)
 --
 -- Examples:
---   permute [(0,0),(1,1)] [True, False] ==> [True, False]
---   permute [(0,1),(1,0)] [True, False] ==> [False, True]
---   permute [(0,0),(1,1),(2,2),(3,3),(4,4)] "curry" ==> "curry"
---   permute [(0,4),(1,3),(2,2),(3,1),(4,0)] "curry" ==> "yrruc"
---   permute [(0,2),(1,1),(2,0),(3,3),(4,4)] "curry" ==> "rucry"
---   permute [(0,2),(1,1),(2,0)] (permute [(0,2),(1,1),(2,0)] "foo")
---     ==> "foo"
---   permute [(0,1),(1,0),(2,2)] (permute [(0,0),(1,2),(2,1)] [9,3,5])
---     ==> [5,9,3]
---   permute [(0,0),(1,2),(2,1)] (permute [(0,1),(1,0),(2,2)] [9,3,5])
---     ==> [3,5,9]
---   permute ([(0,0),(1,2),(2,1)] `compose` [(0,1),(1,0),(2,2)]) [9,3,5]
---     ==> [5,9,3]
---   permute ([(0,1),(1,0),(2,2)] `compose` [(0,0),(1,2),(2,1)]) [9,3,5]
---     ==> [3,5,9]
+--   permute [0,1] [True, False] ==> [True, False]
+--   permute [1,0] [True, False] ==> [False, True]
+--   permute [0,1,2,3] "hask" ==> "hask"
+--   permute [2,0,1,3] "hask" ==> "ashk"
+--   permute [1,2,3,0] "hask" ==> "khas"
+--   permute [2, 1, 0] (permute [2, 1, 0] "foo") ==> "foo"
+--   permute [1, 0, 2] (permute [0, 2, 1] [9,3,5]) ==> [5,9,3]
+--   permute [0, 2, 1] (permute [1, 0, 2] [9,3,5]) ==> [3,5,9]
+--   permute ([0, 2, 1] `multiply` [1, 0, 2]) [9,3,5] ==> [5,9,3]
+--   permute ([1, 0, 2] `multiply` [0, 2, 1]) [9,3,5] ==> [3,5,9]
 
-type Permutation = [(Int,Int)]
+-- A type alias for index lists.
+type Permutation = [Int]
+
+-- Permuting a list with the identity permutation should change nothing.
+identity :: Int -> Permutation
+identity n = [0 .. n - 1]
+
+-- This function shows how permutations can be composed. Do not edit this
+-- function.
+multiply :: Permutation -> Permutation -> Permutation
+multiply p q = map (\i -> p !! (q !! i)) (identity (length p))
 
 permute :: Permutation -> [a] -> [a]
 permute perm xs =

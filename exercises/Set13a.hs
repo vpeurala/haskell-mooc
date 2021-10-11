@@ -202,7 +202,7 @@ rob :: String -> String -> BankOp ()
 rob from to = balance from +> withdrawOp from +> depositOp to
 
 ------------------------------------------------------------------------------
--- Ex 7: using the State monad, write the operation update that first
+-- Ex 7: using the State monad, write the operation `update` that first
 -- multiplies the state by 2 and then adds one to it. The state has
 -- type Int.
 --
