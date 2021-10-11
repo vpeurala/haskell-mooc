@@ -258,4 +258,4 @@ permute perm xs =
       newIndices = map permutor zipped
   in  map snd $ sortOn fst newIndices
   where permutor :: (Int, a) -> (Int, a)
-        permutor (ix, x) = (fromJust $ lookup ix perm, x)
+        permutor (ix, x) = (perm !! ix, x)
