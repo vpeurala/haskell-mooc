@@ -12,15 +12,13 @@
 
 module Set2a where
 
-import Mooc.Todo
-
 -- Some imports you'll need. Don't add other imports :)
-import Data.List
 
 ------------------------------------------------------------------------------
 -- Ex 1: Define the constant years, that is a list of the values 1982,
 -- 2004 and 2020 in this order.
 
+years :: Num a => [a]
 years = [1982, 2004, 2020]
 
 ------------------------------------------------------------------------------
@@ -32,9 +30,9 @@ years = [1982, 2004, 2020]
 -- Hint! remember the take and drop functions.
 
 takeFinal :: Int -> [a] -> [a]
-takeFinal n xs | length xs < n = xs
-takeFinal n xs | length xs == n = xs
-takeFinal n (x:xs) = takeFinal n xs
+takeFinal _ [] = []
+takeFinal n xs | length xs <= n = xs
+takeFinal n (_ : xs) = takeFinal n xs
 
 ------------------------------------------------------------------------------
 -- Ex 3: Update an element at a certain index in a list. More
@@ -48,9 +46,9 @@ takeFinal n (x:xs) = takeFinal n xs
 --   updateAt 2 0 [4,5,6,7] ==>  [4,5,0,7]
 
 updateAt :: Int -> a -> [a] -> [a]
-updateAt _ _ [] = error "ass burglar"
-updateAt 0 r (_:xs) = r:xs
-updateAt i r (x:xs) = x : updateAt (i - 1) r xs
+updateAt _ _ [] = error "Tried to update an empty list."
+updateAt 0 r (_ : xs) = r : xs
+updateAt i r (x : xs) = x : updateAt (i - 1) r xs
 
 ------------------------------------------------------------------------------
 -- Ex 4: substring i j s should return the substring of s starting at
@@ -94,7 +92,7 @@ isPalindrome str = str == reverse str
 
 palindromify :: String -> String
 palindromify s | isPalindrome s = s
-palindromify s = palindromify $ tail $ init s
+palindromify s = (palindromify . tail . init) s
 
 ------------------------------------------------------------------------------
 -- Ex 7: implement safe integer division, that is, a function that
@@ -107,7 +105,8 @@ palindromify s = palindromify $ tail $ init s
 --   safeDiv 4 0  ==> Nothing
 
 safeDiv :: Integer -> Integer -> Maybe Integer
-safeDiv x y = if y == 0 then Nothing else Just (x `div` y)
+safeDiv _ 0 = Nothing
+safeDiv x y = Just (x `div` y)
 
 ------------------------------------------------------------------------------
 -- Ex 8: implement a function greet that greets a person given a first
@@ -120,7 +119,7 @@ safeDiv x y = if y == 0 then Nothing else Just (x `div` y)
 
 greet :: String -> Maybe String -> String
 greet first Nothing = "Hello, " ++ first ++ "!"
-greet first (Just last) = "Hello, " ++ first ++ " " ++ last ++ "!"
+greet first (Just lastName) = "Hello, " ++ first ++ " " ++ lastName ++ "!"
 
 ------------------------------------------------------------------------------
 -- Ex 9: safe list indexing. Define a function safeIndex so that
@@ -137,7 +136,7 @@ greet first (Just last) = "Hello, " ++ first ++ " " ++ last ++ "!"
 
 safeIndex :: [a] -> Int -> Maybe a
 safeIndex xs i | i >= length xs || i < 0 = Nothing
-safeIndex xs i = Just (xs!!i)
+safeIndex xs i = Just (xs !! i)
 
 ------------------------------------------------------------------------------
 -- Ex 10: another variant of safe division. This time you should use
@@ -149,7 +148,7 @@ safeIndex xs i = Just (xs!!i)
 
 eitherDiv :: Integer -> Integer -> Either String Integer
 eitherDiv x y = case y of
-  0 -> Left $ (show x) ++ "/0"
+  0 -> Left (show x ++ "/0")
   n -> Right (x `div` n)
 
 ------------------------------------------------------------------------------
