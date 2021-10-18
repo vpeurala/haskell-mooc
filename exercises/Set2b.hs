@@ -1,10 +1,9 @@
 module Set2b where
 
-import Mooc.Todo
+import Mooc.Todo ()
 
 -- Some imports you'll need. Don't add other imports :)
-import Control.Monad
-import Data.List
+import Data.List (find)
 
 ------------------------------------------------------------------------------
 -- Ex 1: compute binomial coefficients using recursion. Binomial
@@ -82,7 +81,7 @@ myGcd a b = let replacement = max a b - min a b
 -- * you can compute the length of a string with the length function
 
 leftpad :: String -> Int -> String
-leftpad s n = join (replicate (n - length s) " ") ++ s
+leftpad s n = replicate (n - length s) ' ' ++ s
 
 ------------------------------------------------------------------------------
 -- Ex 5: let's make a countdown for a rocket! Given a number, you
@@ -98,7 +97,7 @@ leftpad s n = join (replicate (n - length s) " ") ++ s
 -- * you'll probably need a recursive helper function
 
 countdown :: Integer -> String
-countdown n = "Ready! " ++ concatMap (\n -> show n ++ "... ") [n, n - 1 .. 1] ++ "Liftoff!"
+countdown n = "Ready! " ++ concatMap (\x -> show x ++ "... ") [n, n - 1 .. 1] ++ "Liftoff!"
 
 ------------------------------------------------------------------------------
 -- Ex 6: implement the function smallestDivisor that returns the
