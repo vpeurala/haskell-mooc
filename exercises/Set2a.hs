@@ -30,9 +30,7 @@ years = [1982, 2004, 2020]
 -- Hint! remember the take and drop functions.
 
 takeFinal :: Int -> [a] -> [a]
-takeFinal _ [] = []
-takeFinal n xs | length xs <= n = xs
-takeFinal n (_ : xs) = takeFinal n xs
+takeFinal n xs = drop (length xs - n) xs
 
 ------------------------------------------------------------------------------
 -- Ex 3: Update an element at a certain index in a list. More
@@ -46,9 +44,7 @@ takeFinal n (_ : xs) = takeFinal n xs
 --   updateAt 2 0 [4,5,6,7] ==>  [4,5,0,7]
 
 updateAt :: Int -> a -> [a] -> [a]
-updateAt _ _ [] = error "Tried to update an empty list."
-updateAt 0 r (_ : xs) = r : xs
-updateAt i r (x : xs) = x : updateAt (i - 1) r xs
+updateAt i x xs = take i xs ++ [x] ++ drop (i + 1) xs
 
 ------------------------------------------------------------------------------
 -- Ex 4: substring i j s should return the substring of s starting at
