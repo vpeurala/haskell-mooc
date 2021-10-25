@@ -119,7 +119,7 @@ capitalize = unwords . map capitalizeFirst . words
 --   * the function takeWhile
 
 powers :: Integer -> Integer -> [Integer]
-powers k m = takeWhile (<= m) (map (k^) [0..])
+powers k m = takeWhile (<= m) (map (k ^) [0 ..])
 
 ------------------------------------------------------------------------------
 -- Ex 7: implement a functional while loop. While should be a function
