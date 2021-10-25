@@ -5,13 +5,11 @@
 
 module Set3a where
 
-import Mooc.Todo
+import Data.Char (toUpper)
+import Data.Either (fromRight)
 
 -- Some imports you'll need.
 -- Do not add any other imports! :)
-import Data.Char
-import Data.Either
-import Data.List
 
 ------------------------------------------------------------------------------
 -- Ex 1: implement the function maxBy that takes as argument a
@@ -28,7 +26,7 @@ import Data.List
 --  maxBy head   [1,2,3] [4,5]  ==>  [4,5]
 
 maxBy :: (a -> Int) -> a -> a -> a
-maxBy measure a b = if (measure b) > (measure a) then b else a
+maxBy f a b = if f b > f a then b else a
 
 ------------------------------------------------------------------------------
 -- Ex 2: implement the function mapMaybe that takes a function and a
@@ -76,11 +74,13 @@ mapMaybe2 f x y = f <$> x <*> y
 palindromeHalfs :: [String] -> [String]
 palindromeHalfs xs = map firstHalf (filter palindrome xs)
 
+firstHalf :: [a] -> [a]
 firstHalf s = take n s
-              where
-                n = if even len then len `div` 2 else len `div` 2 + 1
-                len = length s
+  where
+    n = if even len then len `div` 2 else len `div` 2 + 1
+    len = length s
 
+palindrome :: Eq a => [a] -> Bool
 palindrome s = s == reverse s
 
 ------------------------------------------------------------------------------
@@ -99,8 +99,10 @@ palindrome s = s == reverse s
 --   capitalize "goodbye cruel world" ==> "Goodbye Cruel World"
 
 capitalize :: String -> String
-capitalize = intercalate " " . map capitalizeFirst . words
-             where capitalizeFirst (x:xs) = (toUpper x):xs
+capitalize = unwords . map capitalizeFirst . words
+  where
+    capitalizeFirst [] = []
+    capitalizeFirst (x : xs) = toUpper x : xs
 
 ------------------------------------------------------------------------------
 -- Ex 6: powers k max should return all the powers of k that are less
@@ -116,8 +118,8 @@ capitalize = intercalate " " . map capitalizeFirst . words
 --   * k^max > max
 --   * the function takeWhile
 
-powers :: Int -> Int -> [Int]
-powers k max = takeWhile (<= max) (map (k^) [0..])
+powers :: Integer -> Integer -> [Integer]
+powers k m = takeWhile (<= m) (map (k^) [0..])
 
 ------------------------------------------------------------------------------
 -- Ex 7: implement a functional while loop. While should be a function
@@ -139,7 +141,7 @@ powers k max = takeWhile (<= max) (map (k^) [0..])
 --   in while check tail "xyzAvvt"
 --     ==> Avvt
 
-while :: (a->Bool) -> (a->a) -> a -> a
+while :: (a -> Bool) -> (a -> a) -> a -> a
 while check update = head . dropWhile check . iterate update
 
 ------------------------------------------------------------------------------
@@ -158,13 +160,13 @@ while check update = head . dropWhile check . iterate update
 
 whileRight :: (a -> Either b a) -> a -> b
 whileRight check x = case check x of
-                       Left s -> s
-                       Right x -> whileRight check x
+  Left s -> s
+  Right v -> whileRight check v
 
 -- for the whileRight examples:
 -- step k x doubles x if it's less than k
 step :: Int -> Int -> Either Int Int
-step k x = if x<k then Right (2*x) else Left x
+step k x = if x < k then Right (2 * x) else Left x
 
 ------------------------------------------------------------------------------
 -- Ex 9: given a list of strings and a length, return all strings that
@@ -213,7 +215,7 @@ joinToLength len xs = [a ++ b | a <- xs, b <- xs, length (a ++ b) == len]
 --   sumRights [Left "bad!", Left "missing"]         ==>  0
 
 sumRights :: [Either a Int] -> Int
-sumRights = sum . map (either (const 0) id)
+sumRights = sum . map (fromRight 0)
 
 ------------------------------------------------------------------------------
 -- Ex 12: recall the binary function composition operation
@@ -231,7 +233,7 @@ sumRights = sum . map (either (const 0) id)
 multiCompose :: [t -> t] -> t -> t
 multiCompose [] x = x
 multiCompose [f] x = f x
-multiCompose (f:fs) x = f (multiCompose fs x)
+multiCompose (f : fs) x = f (multiCompose fs x)
 
 ------------------------------------------------------------------------------
 -- Ex 13: let's consider another way to compose multiple functions. Given
@@ -251,9 +253,10 @@ multiCompose (f:fs) x = f (multiCompose fs x)
 --   multiApp concat [take 3, reverse] "race" ==> "racecar"
 multiApp :: ([b] -> c) -> [a -> b] -> a -> c
 multiApp f gs x = f (applyAll gs x)
-                  where applyAll [] x     = []
-                        applyAll [g] x    = [g x]
-                        applyAll (g:gs) x = g x : applyAll gs x
+  where
+    applyAll [] _ = []
+    applyAll [g] _ = [g x]
+    applyAll (g : gs') x' = g x' : applyAll gs' x'
 
 ------------------------------------------------------------------------------
 -- Ex 14: in this exercise you get to implement an interpreter for a
@@ -289,12 +292,14 @@ multiApp f gs x = f (applyAll gs x)
 
 interpreter :: [String] -> [String]
 interpreter commands = snd $ multiCompose (map run (reverse commands)) initialWriterState
-                         where initialWriterState :: ((Int, Int), [String])
-                               initialWriterState = ((0, 0), [])
-                               run cmd ((x, y), w) = case cmd of
-                                 "up" -> ((x, y + 1), w)
-                                 "down" -> ((x, y - 1), w)
-                                 "right" -> ((x + 1, y), w)
-                                 "left" -> ((x - 1, y), w)
-                                 "printX" -> ((x, y), w ++ [show x])
-                                 "printY" -> ((x, y), w ++ [show y])
+  where
+    initialWriterState :: ((Int, Int), [String])
+    initialWriterState = ((0, 0), [])
+    run cmd ((x, y), w) = case cmd of
+      "up" -> ((x, y + 1), w)
+      "down" -> ((x, y - 1), w)
+      "right" -> ((x + 1, y), w)
+      "left" -> ((x - 1, y), w)
+      "printX" -> ((x, y), w ++ [show x])
+      "printY" -> ((x, y), w ++ [show y])
+      other -> error other
